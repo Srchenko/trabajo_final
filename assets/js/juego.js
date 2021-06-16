@@ -25,7 +25,11 @@ var texto_puntuacion;
 
 var camara;
 var bordes_mapa;
-var posicion_y_salto = 0;
+var plataformas_rompibles;
+
+var balas;
+var ultimo_disparo = 0;
+var Bala;
 
 var game = new Phaser.Game(config);
 window.focus();
