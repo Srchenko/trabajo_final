@@ -4,39 +4,7 @@ class Nivel_1 extends Phaser.Scene {
     super('nivel_1');
   }
 
-  preload () {
-
-    //  se cargan las imágenes
-    this.load.image('cielo', 'assets/images/cielo.png');
-    this.load.image('jugador', 'assets/images/jugador.png');
-    this.load.image('plataforma', 'assets/images/plataforma.png');
-    this.load.image('pared_invisible_horizontal', 'assets/images/pared_invisible_horizontal.png');
-    this.load.image('pared_invisible_vertical', 'assets/images/pared_invisible_vertical.png');
-    this.load.image('tile_montania', 'assets/images/tile_montania.png');
-    this.load.image('tile_montania_2', 'assets/images/tile_montania_2.png');
-    this.load.image('tile_montania_3', 'assets/images/tile_montania_3.png');
-    this.load.image('tile_suelo_montania', 'assets/images/tile_suelo_montania.png');
-    this.load.image('tile_superficie_suelo_montania', 'assets/images/tile_superficie_suelo_montania.png');
-    this.load.image('tile_superficie_rompible', 'assets/images/tile_superficie_rompible.png');
-    this.load.image('bala', 'assets/images/bala.png');
-
-    //  se cargan los spritesheets
-    this.load.spritesheet('jugador_derecha', 'assets/images/jugador_derecha.png', { frameWidth: 26, frameHeight: 48});
-
-    //  se carga los tiles de un tilemap
-    this.load.tilemapTiledJSON('level_1', 'assets/js/nivel_1.json');
-
-  }
-
   create () {
-
-    this.anims.create({
-      key: 'derecha',
-      frames: this.anims.generateFrameNumbers('jugador_derecha', { start: 0, end: 9 }),
-      frameRate: 12,
-      repeat: -1
-    });
-    
     //  se crea la imagen de fondo y se repiten las veces que sea necesario para hacer el nivel largo
     let posicion_y = 0;
     for (let i = 0; i < 4; i++) {
@@ -48,13 +16,17 @@ class Nivel_1 extends Phaser.Scene {
     plataformas_rompibles = this.physics.add.group();
     let indice_plataforma = 0;
     let plataforma_rompible_hijo;
+    let indice_y = 1128;
 
-    for (let index = 24; index < 24 + (64 * 7); index += 64) {
-      plataformas_rompibles.create(index, 1040, 'tile_superficie_rompible').setOrigin(0);
-      plataforma_rompible_hijo = plataformas_rompibles.getChildren()[indice_plataforma];
-      plataforma_rompible_hijo.body.immovable = true;
-      plataforma_rompible_hijo.body.moves = false;
-      indice_plataforma++;
+    for (let indice = 0; indice < 3; indice++) {
+      for (let index = 28; index < 28 + (64 * 7); index += 64) {
+        plataformas_rompibles.create(index, indice_y, 'tile_superficie_rompible_' + Phaser.Math.Between(1,4)).setOrigin(0);
+        plataforma_rompible_hijo = plataformas_rompibles.getChildren()[indice_plataforma];
+        plataforma_rompible_hijo.body.immovable = true;
+        plataforma_rompible_hijo.body.moves = false;
+        indice_plataforma++;
+      }
+      indice_y += 64;
     }
 
     //  se crea el mapa restante utilizando tiles
@@ -81,10 +53,6 @@ class Nivel_1 extends Phaser.Scene {
     //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
     //   faceColor: new Phaser.Display.Color(40, 39, 37, 255)
     // })
-    
-    //  se crea la cámara que seguirá al jugador
-    camara = this.cameras.main;
-    this.cameras.main.setBounds(0, 0, 504, 3584);
 
     //  se crean bordes de mapa invisibles para que el jugador no salga fuera de la zona de juego
     bordes_mapa = this.physics.add.staticGroup();
@@ -92,16 +60,22 @@ class Nivel_1 extends Phaser.Scene {
     bordes_mapa.create(252, 0, 'pared_invisible_horizontal');
     bordes_mapa.create(252, 3584, 'pared_invisible_horizontal');
 
-    posicion_y = 448;
-    for (let i = 0; i < 4; i++) {
-      bordes_mapa.create(0, posicion_y, 'pared_invisible_vertical');
-      bordes_mapa.create(504, posicion_y, 'pared_invisible_vertical');
-      posicion_y += 896;
-    }
-
     //  se crea al jugador
-    jugador = this.physics.add.sprite(75, 200, 'jugador').setScale(1);
+    jugador = this.physics.add.sprite(75, 200, 'jugador_movimiento');
+    jugador.setSize(18, 48, true);
+    animacion_jugador_suelo = 'derecha_suelo';
+    animacion_jugador_aire = 'derecha_aire';
     jugador.setCollideWorldBounds(false);
+
+    dron = this.physics.add.sprite(445, 950, 'dron_animacion');
+    dron.body.immovable = true;
+    dron.body.moves = false;
+    dron.setCollideWorldBounds(false);
+    dron.anims.play('dron_movimiento', true);
+
+    //  se crea la cámara que seguirá al jugador
+    this.cameras.main.setBounds(0, 0, 504, 3584);
+    camara = this.cameras.main;
 
     //  se añaden eventos para presionar teclas del teclado
     if (cursores =! undefined){
@@ -112,14 +86,12 @@ class Nivel_1 extends Phaser.Scene {
     Bala = new Phaser.Class({
 
       Extends: Phaser.Physics.Arcade.Sprite,
-
       initialize:
 
       //  constructor de bala
       function Bala (scene)
       {
           Phaser.Physics.Arcade.Sprite.call(this, scene, 0, 0, 'bala');
-
           scene.add.existing(this);
           scene.physics.add.existing(this);
       },
@@ -127,10 +99,9 @@ class Nivel_1 extends Phaser.Scene {
       //  cada vez que se dispara una bala
       disparo: function (x, y)
       {
-          this.setPosition(x, y + 25);
+          this.setPosition(x, y + 20);
           this.setVelocityY(jugador.body.velocity.y + 800);
           this.setSize(9, 16, true);
-
           this.setActive(true);
           this.setVisible(true);
       },
@@ -144,12 +115,14 @@ class Nivel_1 extends Phaser.Scene {
     });
 
     //  se agregan todas las colisiones
-    let plataformas_no_rompibles = [plataforma_hecha, costado_hecho];
+    plataformas_no_rompibles = [plataforma_hecha, costado_hecho];
 
-    this.physics.add.collider(jugador, bordes_mapa);
+    //game.physics.enable(plataformas_no_rompibles, Phaser.Physics.ARCADE);
+    
     this.physics.add.collider(balas, bordes_mapa, this.desaparecerBala, null, this);
     this.physics.add.collider(balas, plataformas_no_rompibles, this.desaparecerBala, null, this);
     this.physics.add.collider(balas, plataformas_rompibles, this.desaparecerBalaConPlataforma, null, this);
+    this.physics.add.collider(jugador, bordes_mapa);
     this.physics.add.collider(jugador, plataformas_no_rompibles);
     this.physics.add.collider(jugador, plataformas_rompibles);
 
@@ -157,24 +130,53 @@ class Nivel_1 extends Phaser.Scene {
   }
 
   update (time, delta) {
-    
     //  la camara siempre sigue al jugador en el eje vertical a cierta altura
     camara.centerOn(0,jugador.y + 168);
 
-    //  movimiento de personaje, izquierda, derecha y arriba
-    if (cursores.left.isDown)
-    {
+    //  movimiento de personaje, izquierda, derecha, parado y salto
+
+    if (cursores.left.isDown && jugador.body.onFloor()){
+      jugador.anims.play('izquierda', true);
+      animacion_jugador_suelo = 'izquierda_suelo';
+      animacion_jugador_aire = 'izquierda_aire';
       jugador.setVelocityX(-250);
     }
     else{
-      if(cursores.right.isDown){
-        jugador.anims.play('derecha', true);
-        jugador.setVelocityX(250);
+      if(cursores.left.isDown && !jugador.body.onFloor()){
+        jugador.anims.play('izquierda_aire', true);
+        animacion_jugador_suelo = 'izquierda_suelo';
+        animacion_jugador_aire = 'izquierda_aire';
+        jugador.setVelocityX(-250);
       }
       else{
-        jugador.setVelocityX(0);
+        if(cursores.right.isDown && jugador.body.onFloor()){
+          jugador.anims.play('derecha', true);
+          animacion_jugador_suelo = 'derecha_suelo';
+          animacion_jugador_aire = 'derecha_aire';
+          jugador.setVelocityX(250);
+        }
+        else{
+          if(cursores.right.isDown && !jugador.body.onFloor()){
+            jugador.anims.play('derecha_aire', true);
+            animacion_jugador_suelo = 'derecha_suelo';
+            animacion_jugador_aire = 'derecha_aire';
+            jugador.setVelocityX(250);
+          }
+          else{
+            if(!jugador.body.onFloor()){
+              jugador.anims.play(animacion_jugador_aire, true);
+              jugador.setVelocityX(0);
+            }
+            else{
+              jugador.anims.play(animacion_jugador_suelo, true);
+              jugador.setVelocityX(0);
+            }
+          }
+        }
       }
     }
+
+    jugador.setSize(18, 48, true);
 
     //  el personaje salta cuando está tocando el suelo
     if (cursores.up.isDown && jugador.body.onFloor()) {
@@ -185,31 +187,24 @@ class Nivel_1 extends Phaser.Scene {
     if (cursores.space.isDown && !jugador.body.onFloor() && time > ultimo_disparo)
     {
       var balita = balas.get();
-
       this.children.bringToTop(balita);
       this.children.bringToTop(jugador);
 
       if (balita)
       {
         balita.disparo(jugador.x, jugador.y);
-
         ultimo_disparo = time + 500;
       }
     }
-
   }
 
   desaparecerBala(bala, plataforma){
-
     bala.destroy();
-
   }
 
   desaparecerBalaConPlataforma(bala, plataforma){
-
     bala.destroy();
     plataforma.destroy();
-
   }
 
 }
