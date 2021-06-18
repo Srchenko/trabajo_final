@@ -7,7 +7,7 @@ class Nivel_1 extends Phaser.Scene {
   create () {
     //  se crea la imagen de fondo y se repiten las veces que sea necesario para hacer el nivel largo
     let posicion_y = 0;
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 12; i++) {
       this.add.image(0, posicion_y, 'cielo').setOrigin(0);
       posicion_y += 896;
     }
@@ -18,15 +18,24 @@ class Nivel_1 extends Phaser.Scene {
     let plataforma_rompible_hijo;
     let indice_y = 1128;
 
-    for (let indice = 0; indice < 3; indice++) {
-      for (let index = 28; index < 28 + (64 * 7); index += 64) {
-        plataformas_rompibles.create(index, indice_y, 'tile_superficie_rompible_' + Phaser.Math.Between(1,4)).setOrigin(0);
-        plataforma_rompible_hijo = plataformas_rompibles.getChildren()[indice_plataforma];
-        plataforma_rompible_hijo.body.immovable = true;
-        plataforma_rompible_hijo.body.moves = false;
-        indice_plataforma++;
+    while (indice_y < 10000) {
+      for (let indice = 0; indice < 3; indice++) {
+        for (let index = 28; index < 28 + (64 * 7); index += 64) {
+
+          let aleatorio = Phaser.Math.Between(1,100)
+
+          if((indice_y < 1500) || (indice_y > 1500 && aleatorio <= 75)){
+            plataformas_rompibles.create(index, indice_y, 'tile_superficie_rompible_' + Phaser.Math.Between(1,4)).setOrigin(0);
+            plataforma_rompible_hijo = plataformas_rompibles.getChildren()[indice_plataforma];
+            plataforma_rompible_hijo.body.immovable = true;
+            plataforma_rompible_hijo.body.moves = false;
+            indice_plataforma++;
+          }
+
+        }
+        indice_y += 64;
       }
-      indice_y += 64;
+      indice_y += 1858;
     }
 
     //  se crea el mapa restante utilizando tiles
@@ -58,23 +67,52 @@ class Nivel_1 extends Phaser.Scene {
     bordes_mapa = this.physics.add.staticGroup();
 
     bordes_mapa.create(252, 0, 'pared_invisible_horizontal');
-    bordes_mapa.create(252, 3584, 'pared_invisible_horizontal');
+    bordes_mapa.create(252, 10752, 'pared_invisible_horizontal');
+
+    bordes_invisibles = this.physics.add.staticGroup();
+    bordes_invisibles.create(252, 2550, 'pared_invisible_horizontal');
+    bordes_invisibles.create(252, 2950, 'pared_invisible_horizontal');
 
     //  se crea al jugador
-    jugador = this.physics.add.sprite(75, 200, 'jugador_movimiento');
+    //jugador = this.physics.add.sprite(75, 200, 'jugador_movimiento');
+    jugador = this.physics.add.sprite(252, 3500, 'jugador_movimiento');
     jugador.setSize(18, 48, true);
+    jugador.vida = 3;
     animacion_jugador_suelo = 'derecha_suelo';
     animacion_jugador_aire = 'derecha_aire';
     jugador.setCollideWorldBounds(false);
 
-    dron = this.physics.add.sprite(445, 950, 'dron_animacion');
-    dron.body.immovable = true;
-    dron.body.moves = false;
-    dron.setCollideWorldBounds(false);
-    dron.anims.play('dron_movimiento', true);
+    dron = this.physics.add.group();
+    dron.create(445, 950, 'dron_animacion');
+    dron.create(252, 2825, 'dron_animacion');
+    
+    dron.create(252, 2700, 'dron_animacion');
+    dron.create(100, 2450, 'dron_animacion');
+    dron.create(60, 3750, 'dron_animacion');
+
+
+    for (let indice = 0; indice < 2; indice++) {
+      dron.getChildren()[indice].body.immovable = true;
+      dron.getChildren()[indice].body.moves = false;
+      dron.getChildren()[indice].vida = 2;
+      dron.getChildren()[indice].anims.play('dron_movimiento', true);
+    }
+
+    for (let indice = 2; indice < 5; indice++) {
+      dron.getChildren()[indice].vida = 2;
+      dron.getChildren()[indice].anims.play('dron_movimiento', true);
+      dron.getChildren()[indice].body.setAllowGravity(false);
+      dron.getChildren()[indice].body.setBounce(1);
+    }
+
+    dron.getChildren()[2].setVelocity(-150, -150);
+    dron.getChildren()[3].body.immovable = true;
+    dron.getChildren()[3].setVelocity(-150, 0);
+    dron.getChildren()[4].body.immovable = true;
+    dron.getChildren()[4].setVelocity(0, -150);
 
     //  se crea la cámara que seguirá al jugador
-    this.cameras.main.setBounds(0, 0, 504, 3584);
+    this.cameras.main.setBounds(0, 0, 504, 10752);
     camara = this.cameras.main;
 
     //  se añaden eventos para presionar teclas del teclado
@@ -116,25 +154,47 @@ class Nivel_1 extends Phaser.Scene {
 
     //  se agregan todas las colisiones
     plataformas_no_rompibles = [plataforma_hecha, costado_hecho];
-
-    //game.physics.enable(plataformas_no_rompibles, Phaser.Physics.ARCADE);
     
     this.physics.add.collider(balas, bordes_mapa, this.desaparecerBala, null, this);
     this.physics.add.collider(balas, plataformas_no_rompibles, this.desaparecerBala, null, this);
     this.physics.add.collider(balas, plataformas_rompibles, this.desaparecerBalaConPlataforma, null, this);
+    this.physics.add.collider(balas, dron, this.desaparecerBalaConDron, null, this);
+    jugador_overlap = this.physics.add.overlap(jugador, dron, this.bajarVidaJugador, null, this);
     this.physics.add.collider(jugador, bordes_mapa);
     this.physics.add.collider(jugador, plataformas_no_rompibles);
     this.physics.add.collider(jugador, plataformas_rompibles);
+    this.physics.add.collider(dron);
+    this.physics.add.collider(dron, plataformas_no_rompibles);
+    this.physics.add.collider(dron, plataformas_rompibles);
+    this.physics.add.collider(dron, bordes_invisibles);
 
     window.focus();
   }
 
   update (time, delta) {
+
+    if(!jugador_overlap.active){
+
+      espera_un_segundo_capo += delta;
+
+      if((espera_un_segundo_capo >= 0 && espera_un_segundo_capo <= 250) || (espera_un_segundo_capo >= 500 && espera_un_segundo_capo <= 750) || (espera_un_segundo_capo >= 1000 && espera_un_segundo_capo <= 1250) || (espera_un_segundo_capo >= 1500 && espera_un_segundo_capo <= 1750)){
+        jugador.setTint(0xff0000);
+      }
+      else{
+        jugador.setTint(0xffffff);
+      }
+      
+      if(espera_un_segundo_capo >= 2000){
+        jugador_overlap.active = true;
+        espera_un_segundo_capo = 0;
+      }
+
+    }
+
     //  la camara siempre sigue al jugador en el eje vertical a cierta altura
     camara.centerOn(0,jugador.y + 168);
 
     //  movimiento de personaje, izquierda, derecha, parado y salto
-
     if (cursores.left.isDown && jugador.body.onFloor()){
       jugador.anims.play('izquierda', true);
       animacion_jugador_suelo = 'izquierda_suelo';
@@ -193,7 +253,7 @@ class Nivel_1 extends Phaser.Scene {
       if (balita)
       {
         balita.disparo(jugador.x, jugador.y);
-        ultimo_disparo = time + 500;
+        ultimo_disparo = time + 300;
       }
     }
   }
@@ -205,6 +265,30 @@ class Nivel_1 extends Phaser.Scene {
   desaparecerBalaConPlataforma(bala, plataforma){
     bala.destroy();
     plataforma.destroy();
+  }
+
+  desaparecerBalaConDron(bala, dron_elegido){
+    bala.destroy();
+    dron_elegido.vida--;
+
+    let aleatorio = Phaser.Math.Between(1,2);
+    if(!dron_elegido.body.immovable){
+      if(aleatorio == 1){
+        dron_elegido.setVelocity(-150, 150);
+      }
+      else{
+        dron_elegido.setVelocity(150, 150);
+      }
+    }
+
+    if(dron_elegido.vida == 0){
+      dron_elegido.destroy();
+    }
+  }
+
+  bajarVidaJugador(jugador_elegido, dron_elegido){
+    jugador_elegido.vida--;
+    jugador_overlap.active = false;
   }
 
 }

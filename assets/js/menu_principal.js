@@ -30,6 +30,7 @@ class Menu_Principal extends Phaser.Scene {
   }
 
   create (){
+    //  se cargan animaciones del jugador y de los enemigos
     this.anims.create({
       key: 'derecha',
       frames: this.anims.generateFrameNumbers('jugador_movimiento', { start: 0, end: 9 }),

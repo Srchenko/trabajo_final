@@ -7,7 +7,7 @@ var config = {
       arcade: {
           tileBias: 32,
           gravity: { y: 700 },
-          debug: false
+          debug: true
       }
   },
   scene: [Menu_Principal, Nivel_1],
@@ -26,6 +26,7 @@ var texto_puntuacion;
 
 var camara;
 var bordes_mapa;
+var bordes_invisibles;
 var plataformas_rompibles;
 var plataformas_no_rompibles;
 
@@ -38,8 +39,9 @@ var dron;
 var animacion_jugador_suelo;
 var animacion_jugador_aire;
 
-var tecla_espacio = false;
-var tecla_arriba = false;
+var vida;
+var jugador_overlap;
+var espera_un_segundo_capo = 0;
 
 var game = new Phaser.Game(config);
 window.focus();
