@@ -63,19 +63,19 @@ class Nivel_1 extends Phaser.Scene {
     //   faceColor: new Phaser.Display.Color(40, 39, 37, 255)
     // })
 
-    //  se crean bordes de mapa invisibles para que el jugador no salga fuera de la zona de juego
-    bordes_mapa = this.physics.add.staticGroup();
-
-    bordes_mapa.create(252, 0, 'pared_invisible_horizontal');
-    bordes_mapa.create(252, 10752, 'pared_invisible_horizontal');
-
     bordes_invisibles = this.physics.add.staticGroup();
     bordes_invisibles.create(252, 2550, 'pared_invisible_horizontal');
     bordes_invisibles.create(252, 2950, 'pared_invisible_horizontal');
+    bordes_invisibles.create(252, 4075, 'pared_invisible_horizontal');
+    bordes_invisibles.create(252, 4475, 'pared_invisible_horizontal');
+    bordes_invisibles.create(252, 6710, 'pared_invisible_horizontal');
+    bordes_invisibles.create(252, 7275, 'pared_invisible_horizontal');
+    bordes_invisibles.create(252, 7990, 'pared_invisible_horizontal');
+    bordes_invisibles.create(252, 9115, 'pared_invisible_horizontal');
 
     //  se crea al jugador
-    //jugador = this.physics.add.sprite(75, 200, 'jugador_movimiento');
-    jugador = this.physics.add.sprite(252, 3500, 'jugador_movimiento');
+    jugador = this.physics.add.sprite(75, 200, 'jugador_movimiento');
+    //jugador = this.physics.add.sprite(252, 9896, 'jugador_movimiento');
     jugador.setSize(18, 48, true);
     jugador.vida = 3;
     animacion_jugador_suelo = 'derecha_suelo';
@@ -85,31 +85,87 @@ class Nivel_1 extends Phaser.Scene {
     dron = this.physics.add.group();
     dron.create(445, 950, 'dron_animacion');
     dron.create(252, 2825, 'dron_animacion');
+    dron.create(50, 4825, 'dron_animacion');
+    dron.create(454, 4825, 'dron_animacion');
+    dron.create(50, 9225, 'dron_animacion');
+    dron.create(454, 9225, 'dron_animacion');
+    dron.create(252, 9775, 'dron_animacion');
     
     dron.create(252, 2700, 'dron_animacion');
     dron.create(100, 2450, 'dron_animacion');
     dron.create(60, 3750, 'dron_animacion');
+    dron.create(100, 4375, 'dron_animacion');
+    dron.create(100, 7000, 'dron_animacion');
+    dron.create(404, 7000, 'dron_animacion');
+    dron.create(100, 8300, 'dron_animacion');
+    dron.create(252, 8600, 'dron_animacion');
+    dron.create(252, 9000, 'dron_animacion');
+    dron.create(252, 9890, 'dron_animacion');
+    dron.create(454, 10000, 'dron_animacion');
 
-
-    for (let indice = 0; indice < 2; indice++) {
+    for (let indice = 0; indice < 7; indice++) {
       dron.getChildren()[indice].body.immovable = true;
       dron.getChildren()[indice].body.moves = false;
       dron.getChildren()[indice].vida = 2;
       dron.getChildren()[indice].anims.play('dron_movimiento', true);
+      dron.getChildren()[indice].setCollideWorldBounds(false);
+      dron.getChildren()[indice].puntos = 20;
     }
 
-    for (let indice = 2; indice < 5; indice++) {
+    for (let indice = 7; indice < 18; indice++) {
       dron.getChildren()[indice].vida = 2;
       dron.getChildren()[indice].anims.play('dron_movimiento', true);
       dron.getChildren()[indice].body.setAllowGravity(false);
       dron.getChildren()[indice].body.setBounce(1);
+      dron.getChildren()[indice].setCollideWorldBounds(false);
+      dron.getChildren()[indice].puntos = 20;
     }
 
-    dron.getChildren()[2].setVelocity(-150, -150);
-    dron.getChildren()[3].body.immovable = true;
-    dron.getChildren()[3].setVelocity(-150, 0);
-    dron.getChildren()[4].body.immovable = true;
-    dron.getChildren()[4].setVelocity(0, -150);
+    dron.getChildren()[7].setVelocity(-150, -150);
+    dron.getChildren()[8].body.immovable = true;
+    dron.getChildren()[8].setVelocity(-150, 0);
+    dron.getChildren()[9].body.immovable = true;
+    dron.getChildren()[9].setVelocity(0, -150);
+    dron.getChildren()[10].setVelocity(-150, -150);
+    dron.getChildren()[11].setVelocity(-150, -150);
+    dron.getChildren()[12].setVelocity(150, -150);
+    dron.getChildren()[13].setVelocity(-150, -150);
+    dron.getChildren()[14].setVelocity(150, -150);
+    dron.getChildren()[15].setVelocity(-150, -150);
+    dron.getChildren()[16].body.immovable = true;
+    dron.getChildren()[16].setVelocity(-150, 0);
+    dron.getChildren()[17].body.immovable = true;
+    dron.getChildren()[17].setVelocity(0, -150);
+
+    items = this.physics.add.group();
+    items.create(40, 1981, 'item_1');
+    items.create(252, 2461, this.itemAleatorio());
+    items.create(454, 2941, this.itemAleatorio());
+    items.create(40, 3501, this.itemAleatorio());
+    items.create(425, 4221, this.itemAleatorio());
+    items.create(252, 4701, this.itemAleatorio());
+    items.create(454, 5581, this.itemAleatorio());
+    items.create(100, 6061, this.itemAleatorio());
+    items.create(40, 6965, this.itemAleatorio());
+    items.create(40, 7661, this.itemAleatorio());
+    items.create(252, 8075, this.itemAleatorio());
+    items.create(375, 8300, this.itemAleatorio());
+    items.create(90, 8700, this.itemAleatorio());
+    items.create(252, 9101, this.itemAleatorio());
+    items.create(40, 9901, 'item_1');
+    items.create(40, 10300, 'item_1');
+
+    for (let indice = 0; indice < 16; indice++) {
+      items.getChildren()[indice].body.immovable = true;
+      items.getChildren()[indice].body.moves = false;
+      if(items.getChildren()[indice].texture.key == 'item_1'){
+        items.getChildren()[indice].puntos = 5;
+      }
+      else{
+        items.getChildren()[indice].puntos = 10;
+      }
+    }
+
 
     //  se crea la cámara que seguirá al jugador
     this.cameras.main.setBounds(0, 0, 504, 10752);
@@ -142,6 +198,7 @@ class Nivel_1 extends Phaser.Scene {
           this.setSize(9, 16, true);
           this.setActive(true);
           this.setVisible(true);
+          this.setCollideWorldBounds(false);
       },
 
     });
@@ -152,17 +209,44 @@ class Nivel_1 extends Phaser.Scene {
       runChildUpdate: true
     });
 
+    let base = this.physics.add.sprite(0, 10608, 'base_final').setOrigin(0);
+    this.add.image(430, 10520, 'bandera_argentina').setOrigin(0);
+    base.body.immovable = true;
+    base.body.moves = false;
+
+    texto_objeto_puntos = [this.add.text(0, 0, ""), 2000];
+    texto_objeto_puntos[0].visible = false;
+
+    fondo_hud = this.add.image(0, 0, 'fondo_hud').setOrigin(0);
+    fondo_hud.scrollFactorX = 0;
+    fondo_hud.scrollFactorY = 0;
+
+    texto_vidas = this.add.text(5, 32, 'Vidas: ' + jugador.vida, { fontFamily: 'Arial Black', fontSize: '24px', fill: '#F00', stroke: '#000000', strokeThickness: 6 }).setOrigin(0, 0.5);
+    texto_vidas.scrollFactorX = 0;
+    texto_vidas.scrollFactorY = 0;
+
+    texto_puntos = this.add.text(230, 32, 'Puntos: ' + puntos_inicial, { fontFamily: 'Arial Black', fontSize: '24px', fill: '#F00', stroke: '#000000', strokeThickness: 6 }).setOrigin(0.5, 0.5);
+    texto_puntos.scrollFactorX = 0;
+    texto_puntos.scrollFactorY = 0;
+
+    texto_tiempo = this.add.text(499, 32, 'Tiempo: ' + tiempo_inicial, { fontFamily: 'Arial Black', fontSize: '24px', fill: '#F00', stroke: '#000000', strokeThickness: 6 }).setOrigin(1, 0.5);
+    texto_tiempo.scrollFactorX = 0;
+    texto_tiempo.scrollFactorY = 0;
+
     //  se agregan todas las colisiones
     plataformas_no_rompibles = [plataforma_hecha, costado_hecho];
     
-    this.physics.add.collider(balas, bordes_mapa, this.desaparecerBala, null, this);
     this.physics.add.collider(balas, plataformas_no_rompibles, this.desaparecerBala, null, this);
     this.physics.add.collider(balas, plataformas_rompibles, this.desaparecerBalaConPlataforma, null, this);
     this.physics.add.collider(balas, dron, this.desaparecerBalaConDron, null, this);
+    this.physics.add.collider(balas, base, this.desaparecerBala, null, this);
+
     jugador_overlap = this.physics.add.overlap(jugador, dron, this.bajarVidaJugador, null, this);
-    this.physics.add.collider(jugador, bordes_mapa);
     this.physics.add.collider(jugador, plataformas_no_rompibles);
     this.physics.add.collider(jugador, plataformas_rompibles);
+    this.physics.add.collider(jugador, base);
+    this.physics.add.overlap(jugador, items, this.recolectarItem, null, this);
+    
     this.physics.add.collider(dron);
     this.physics.add.collider(dron, plataformas_no_rompibles);
     this.physics.add.collider(dron, plataformas_rompibles);
@@ -173,6 +257,18 @@ class Nivel_1 extends Phaser.Scene {
 
   update (time, delta) {
 
+    if(texto_objeto_puntos[0].visible){
+      this.children.bringToTop(fondo_hud);
+      this.children.bringToTop(texto_puntos);
+      this.children.bringToTop(texto_tiempo);
+      this.children.bringToTop(texto_vidas);
+
+      texto_objeto_puntos[1] -= delta
+      if(texto_objeto_puntos[1] <= 0){
+        texto_objeto_puntos[0].visible = false;
+      }
+    }
+    
     if(!jugador_overlap.active){
 
       espera_un_segundo_capo += delta;
@@ -189,6 +285,13 @@ class Nivel_1 extends Phaser.Scene {
         espera_un_segundo_capo = 0;
       }
 
+    }
+
+    tiempo_segundo_frames -= delta;
+    if(tiempo_segundo_frames <= 0){
+      tiempo_inicial --;
+      tiempo_segundo_frames += 1000;
+      texto_tiempo.setText("Tiempo: " + tiempo_inicial);
     }
 
     //  la camara siempre sigue al jugador en el eje vertical a cierta altura
@@ -258,7 +361,7 @@ class Nivel_1 extends Phaser.Scene {
     }
   }
 
-  desaparecerBala(bala, plataforma){
+  desaparecerBala(bala, cosa){
     bala.destroy();
   }
 
@@ -282,13 +385,54 @@ class Nivel_1 extends Phaser.Scene {
     }
 
     if(dron_elegido.vida == 0){
+      puntos_inicial += dron_elegido.puntos;
+
+      texto_objeto_puntos[0].visible = false;
+      texto_objeto_puntos = [this.add.text(dron_elegido.x, dron_elegido.y, '+ ' + dron_elegido.puntos, {fontFamily: 'Arial Black', fontSize: '20px', fill: '#000'}).setOrigin(0.5), 2000];
+
+      texto_puntos.setText("Puntos: " + puntos_inicial);
       dron_elegido.destroy();
     }
   }
 
   bajarVidaJugador(jugador_elegido, dron_elegido){
     jugador_elegido.vida--;
+    texto_vidas.setText("Vidas: " + jugador_elegido.vida);
     jugador_overlap.active = false;
+  }
+
+  recolectarItem(jugador_elegido, item_elegido){
+      puntos_inicial += item_elegido.puntos;
+
+      texto_objeto_puntos[0].visible = false;
+      texto_objeto_puntos = [this.add.text(item_elegido.x, item_elegido.y, '+ ' + item_elegido.puntos, {fontFamily: 'Arial Black', fontSize: '20px', fill: '#000'}).setOrigin(0.5), 2000];
+
+      texto_puntos.setText("Puntos: " + puntos_inicial);
+
+      if (item_elegido.puntos == 10){
+        tiempo_inicial += item_elegido.puntos;
+        this.tiempoMax();
+      }
+
+      item_elegido.destroy();
+  }
+
+  tiempoMax(){
+    if(tiempo_inicial > 60){
+      tiempo_inicial = 60;
+      tiempo_segundo_frames = 1000;
+    }
+    texto_tiempo.setText("Tiempo: " + tiempo_inicial);
+  }
+
+  itemAleatorio(){
+    let aleatorio = Phaser.Math.Between(1,2);
+    if(aleatorio == 2){
+      return 'item_2';
+    }
+    else{
+      return 'item_1';
+    }
   }
 
 }

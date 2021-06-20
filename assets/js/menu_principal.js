@@ -8,7 +8,6 @@ class Menu_Principal extends Phaser.Scene {
     //  se cargan las imágenes
     this.load.image('cielo', 'assets/images/cielo.png');
     this.load.image('pared_invisible_horizontal', 'assets/images/pared_invisible_horizontal.png');
-    this.load.image('pared_invisible_vertical', 'assets/images/pared_invisible_vertical.png');
     this.load.image('tile_montania', 'assets/images/tile_montania.png');
     this.load.image('tile_montania_2', 'assets/images/tile_montania_2.png');
     this.load.image('tile_montania_3', 'assets/images/tile_montania_3.png');
@@ -20,6 +19,12 @@ class Menu_Principal extends Phaser.Scene {
     this.load.image('tile_superficie_rompible_4', 'assets/images/tile_superficie_rompible_4.png');
 
     this.load.image('bala', 'assets/images/bala.png');
+    this.load.image('base_final', 'assets/images/base_final.png');
+    this.load.image('bandera_argentina', 'assets/images/bandera_argentina.png');
+    this.load.image('item_1', 'assets/images/item_1.png')
+    this.load.image('item_2', 'assets/images/item_2.png')
+
+    this.load.image('fondo_hud', 'assets/images/fondo_hud.png');
 
     //  se cargan los spritesheets
     this.load.spritesheet('jugador_movimiento', 'assets/images/jugador_movimiento.png', { frameWidth: 26, frameHeight: 48});
