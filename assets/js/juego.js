@@ -57,6 +57,16 @@ var tiempo_inicial = 60;
 var tiempo_segundo_frames = 1000;
 
 var musica;
+var sonido_salto_personaje;
+var sonido_caida_personaje;
+var sonido_disparo_personaje;
+var sonido_danio_personaje;
+var sonido_danio_enemigo;
+var sonido_enemigo_destruido;
+var sonido_plataforma_rompible_destruida;
+var sonido_muerte_personaje;
+var sonido_juntar_moneda;
+var sonido_juntar_cronometro;
 
 var game = new Phaser.Game(config);
 window.focus();

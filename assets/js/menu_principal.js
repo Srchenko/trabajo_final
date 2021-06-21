@@ -39,18 +39,27 @@ class Menu_Principal extends Phaser.Scene {
 
     //  se carga la música y los sonidos
     this.load.audio('musica_nivel_1', 'assets/audio/musica_nivel_1.mp3');
+    this.load.audio('caida_personaje', 'assets/audio/caida_personaje.mp3');
+    this.load.audio('salto_personaje', 'assets/audio/salto_personaje.mp3');
+    this.load.audio('disparo_personaje', 'assets/audio/disparo_personaje.mp3');
+    this.load.audio('danio_personaje', 'assets/audio/danio_personaje.mp3');
+    this.load.audio('danio_enemigo', 'assets/audio/danio_enemigo.mp3');
+    this.load.audio('enemigo_destruido', 'assets/audio/enemigo_destruido.mp3');
+    this.load.audio('plataforma_rompible_destruida', 'assets/audio/plataforma_rompible_destruida.mp3');
+    this.load.audio('muerte_personaje', 'assets/audio/muerte_personaje.mp3');
+    this.load.audio('juntar_moneda', 'assets/audio/juntar_moneda.mp3');
+    this.load.audio('juntar_cronometro', 'assets/audio/juntar_cronometro.mp3');
 
   }
 
   create (){
 
     //  se cargan animaciones del jugador y de los enemigos
-
     this.anims.create({
 
       key: 'perdio_jugador',
       frames: this.anims.generateFrameNumbers('jugador_perder', { start: 0, end: 23 }),
-      frameRate: 12,
+      frameRate: 10,
       repeat: 0
 
     })

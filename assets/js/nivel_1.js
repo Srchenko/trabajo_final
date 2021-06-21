@@ -136,17 +136,18 @@ class Nivel_1 extends Phaser.Scene {
     this.physics.add.collider(balas, base, this.desaparecerBala, null, this);
 
     jugador_overlap = this.physics.add.overlap(jugador, dron, this.bajarVidaJugador, null, this);
-    this.physics.add.collider(jugador, plataformas_no_rompibles);
-    this.physics.add.collider(jugador, plataformas_rompibles);
+    this.physics.add.collider(jugador, plataformas_no_rompibles, this.sonidosJugador, null, this);
+    this.physics.add.collider(jugador, plataformas_rompibles, this.sonidosJugador, null, this);
     this.physics.add.collider(jugador, base);
     this.physics.add.overlap(jugador, items, this.recolectarItem, null, this);
-    //
+    
     this.physics.add.collider(dron);
     this.physics.add.collider(dron, plataformas_no_rompibles);
     this.physics.add.collider(dron, plataformas_rompibles);
     this.physics.add.collider(dron, bordes_invisibles);
 
-    musica = [this.sound.add('musica_nivel_1', {volume: 0.4, loop: true}), true];
+    //  se añaden la música y los sonidos para este nivel
+    this.agregarMusicaSonidos();
 
     window.focus();
   }
@@ -154,9 +155,22 @@ class Nivel_1 extends Phaser.Scene {
   update (time, delta) {
 
     if(jugador.vida == 0){
+
       this.children.bringToTop(jugador);
       this.physics.pause();
+      sonido_muerte_personaje[1] -= delta;
+      if(sonido_muerte_personaje[1] <= 0){
+        sonido_muerte_personaje[0].loop = false;
+      }
+
       return;
+
+    }
+
+    if(!jugador.body.onFloor()){
+      
+      sonido_caida_personaje[1] = true;
+
     }
 
     //  cuando el jugador elimina un enemigo o junta un item, aparecerá un texto, el mismo desaparecerá luego de 2 segundos
@@ -284,6 +298,12 @@ class Nivel_1 extends Phaser.Scene {
     //  el personaje salta cuando está tocando el suelo
     if (cursores.up.isDown && jugador.body.onFloor()) {
 
+      if (sonido_salto_personaje[1]){
+
+        sonido_salto_personaje[0].play();
+        sonido_salto_personaje[1] = false;
+
+      }
       jugador.setVelocityY(-400);
 
     }
@@ -302,6 +322,7 @@ class Nivel_1 extends Phaser.Scene {
       {
 
         balita.disparo(jugador.x, jugador.y);
+        sonido_disparo_personaje.play();
         ultimo_disparo = time + 300;
 
       }
@@ -502,12 +523,29 @@ class Nivel_1 extends Phaser.Scene {
 
   }
 
+  agregarMusicaSonidos(){
+
+    musica = [this.sound.add('musica_nivel_1', {volume: 0.2, loop: true}), true];
+    sonido_salto_personaje = [this.sound.add('salto_personaje', {volume: 0.5}), true];
+    sonido_caida_personaje = [this.sound.add('caida_personaje', {volume: 0.5}), false];
+    sonido_disparo_personaje = this.sound.add('disparo_personaje', {volume: 0.5});
+    sonido_danio_personaje = this.sound.add('danio_personaje', {volume: 0.5});
+    sonido_danio_enemigo = this.sound.add('danio_enemigo', {volume: 0.5});
+    sonido_enemigo_destruido = this.sound.add('enemigo_destruido', {volume: 0.5});
+    sonido_plataforma_rompible_destruida = this.sound.add('plataforma_rompible_destruida', {volume: 0.5});
+    sonido_muerte_personaje = [this.sound.add('muerte_personaje', {volume: 0.5, loop: true}), 2000];
+    sonido_juntar_moneda = this.sound.add('juntar_moneda', {volume: 0.5});
+    sonido_juntar_cronometro = this.sound.add('juntar_cronometro', {volume: 0.5});
+
+  }
+
   desaparecerBala(bala, cosa){
     bala.destroy();
   }
 
   desaparecerBalaConPlataforma(bala, plataforma){
 
+    sonido_plataforma_rompible_destruida.play();
     bala.destroy();
     plataforma.destroy();
 
@@ -531,6 +569,8 @@ class Nivel_1 extends Phaser.Scene {
 
     //  si el dron es destruido, se añaden los puntos en el hud y se muestra en pantalla también, en el lugar de destrucción, los puntos obtenidos
     if(dron_elegido.vida == 0){
+
+      sonido_enemigo_destruido.play();
       puntos_inicial += dron_elegido.puntos;
 
       texto_objeto_puntos[0].visible = false;
@@ -538,6 +578,12 @@ class Nivel_1 extends Phaser.Scene {
 
       texto_puntos.setText("Puntos: " + puntos_inicial);
       dron_elegido.destroy();
+
+    }
+    else{
+
+      sonido_danio_enemigo.play();
+
     }
 
   }
@@ -551,7 +597,13 @@ class Nivel_1 extends Phaser.Scene {
 
     if (jugador_elegido.vida == 0){
 
+      sonido_muerte_personaje[0].play();
       jugador_elegido.anims.play('perdio_jugador', true);
+
+    }
+    else{
+
+      sonido_danio_personaje.play();
 
     }
 
@@ -570,10 +622,16 @@ class Nivel_1 extends Phaser.Scene {
     //  si se junta un item de cronómetro se añaden 10 segundos al temporizador
     if (item_elegido.puntos == 10){
 
+      sonido_juntar_cronometro.play();
       tiempo_inicial += item_elegido.puntos;
 
       //  el tiempo máximo es de 60 segundos, por lo tanto, se hace una función para que al juntar ese item, no supere los 60 segundos
       this.tiempoMax();
+
+    }
+    else{
+
+      sonido_juntar_moneda.play();
 
     }
 
@@ -599,6 +657,18 @@ class Nivel_1 extends Phaser.Scene {
     }
     else{
       return 'item_1';
+    }
+
+  }
+
+  sonidosJugador(jugador_elegido, plataforma_elegida){
+    
+    sonido_salto_personaje[1] = true;
+    if(sonido_caida_personaje[1] && jugador_elegido.body.onFloor()){
+
+      sonido_caida_personaje[0].play();
+      sonido_caida_personaje[1] = false;
+
     }
 
   }
