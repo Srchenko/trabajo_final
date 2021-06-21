@@ -56,5 +56,7 @@ var texto_tiempo;
 var tiempo_inicial = 60;
 var tiempo_segundo_frames = 1000;
 
+var musica;
+
 var game = new Phaser.Game(config);
 window.focus();
