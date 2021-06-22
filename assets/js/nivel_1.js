@@ -154,6 +154,7 @@ class Nivel_1 extends Phaser.Scene {
 
   update (time, delta) {
 
+    //  si la vida del jugador llega a 0, se detiene el progreso del juego y se corta el sonido de la animación de muerte
     if(jugador.vida == 0){
 
       this.children.bringToTop(jugador);
@@ -167,6 +168,7 @@ class Nivel_1 extends Phaser.Scene {
 
     }
 
+    //  si el jugador está en el aire, el sonido de choque con el suelo se activa para sonar después
     if(!jugador.body.onFloor()){
       
       sonido_caida_personaje[1] = true;
@@ -525,6 +527,7 @@ class Nivel_1 extends Phaser.Scene {
 
   agregarMusicaSonidos(){
 
+    //  algunos sonidos y música estarán dentro de un arreglo, porque su comportamiento será diferente en diferentes puntos del juego dependiendo de las acciones del jugador
     musica = [this.sound.add('musica_nivel_1', {volume: 0.2, loop: true}), true];
     sonido_salto_personaje = [this.sound.add('salto_personaje', {volume: 0.5}), true];
     sonido_caida_personaje = [this.sound.add('caida_personaje', {volume: 0.5}), false];
@@ -568,6 +571,7 @@ class Nivel_1 extends Phaser.Scene {
     }
 
     //  si el dron es destruido, se añaden los puntos en el hud y se muestra en pantalla también, en el lugar de destrucción, los puntos obtenidos
+    //  hay dos sonidos diferentes para el dron, cuando se destruye y cuando recibe daño
     if(dron_elegido.vida == 0){
 
       sonido_enemigo_destruido.play();
@@ -595,6 +599,7 @@ class Nivel_1 extends Phaser.Scene {
     texto_vidas.setText("Vidas: " + jugador_elegido.vida);
     jugador_overlap.active = false;
 
+    //  dependiendo de la vida del jugador, suceden diferentes sonidos y animaciones
     if (jugador_elegido.vida == 0){
 
       sonido_muerte_personaje[0].play();
@@ -620,6 +625,7 @@ class Nivel_1 extends Phaser.Scene {
     texto_puntos.setText("Puntos: " + puntos_inicial);
 
     //  si se junta un item de cronómetro se añaden 10 segundos al temporizador
+    //  hay sonidos diferentes para cada tipo de item que se junta
     if (item_elegido.puntos == 10){
 
       sonido_juntar_cronometro.play();
@@ -663,6 +669,8 @@ class Nivel_1 extends Phaser.Scene {
 
   sonidosJugador(jugador_elegido, plataforma_elegida){
     
+    //  al caer al suelo, el jugador hace un solo sonido y se activa en otro lugar cuando está en el aire
+    //  también acá se activa el sonido del salto en el aire para reproducirse luego cuando el personaje vuelve a saltar estando en el suelo anteriormente
     sonido_salto_personaje[1] = true;
     if(sonido_caida_personaje[1] && jugador_elegido.body.onFloor()){
 
