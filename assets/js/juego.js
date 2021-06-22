@@ -10,7 +10,7 @@ var config = {
           debug: false
       }
   },
-  scene: [Menu_Principal, Nivel_1],
+  scene: [Menu_Principal, Creditos, Nivel_1, Nivel_2, Fin_juego],
   audio: {
       disableWebAudio: true
   },
@@ -20,8 +20,6 @@ var config = {
 var jugador;
 var plataformas;
 var cursores;
-var puntuacion = 0;
-var fin_juego = false;
 
 var camara;
 var bordes_invisibles;
@@ -51,10 +49,12 @@ var puntos_inicial = 0;
 var puntos;
 
 var texto_vidas;
+var vidas_jugador_fin_juego;
 
 var texto_tiempo;
 var tiempo_inicial = 60;
 var tiempo_segundo_frames = 1000;
+var tiempo_finalizado = false;
 
 var musica;
 var sonido_salto_personaje;
@@ -67,6 +67,9 @@ var sonido_plataforma_rompible_destruida;
 var sonido_muerte_personaje;
 var sonido_juntar_moneda;
 var sonido_juntar_cronometro;
+
+var imagen_inicio;
+var presiona_cualquier_tecla;
 
 var game = new Phaser.Game(config);
 window.focus();

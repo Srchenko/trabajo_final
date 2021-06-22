@@ -14,7 +14,6 @@ class Nivel_1 extends Phaser.Scene {
 
       this.add.image(0, posicion_y, 'cielo').setOrigin(0);
       posicion_y += 896;
-
     }
     
     //  acá se crean las plataformas que se pueden romper con disparos
@@ -154,14 +153,34 @@ class Nivel_1 extends Phaser.Scene {
 
   update (time, delta) {
 
-    //  si la vida del jugador llega a 0, se detiene el progreso del juego y se corta el sonido de la animación de muerte
-    if(jugador.vida == 0){
+    //  si la vida del jugador llega a 0 o termina el tiempo, se detiene el progreso del juego y se hace la animación de muerte con su sonido
+    //  se dirige a la pantalla de fin de juego luego de la animación correspondiente
+    if(jugador.vida == 0 || tiempo_inicial == 0){
+
+      if(tiempo_finalizado){
+
+        sonido_muerte_personaje[0].play();
+        jugador.anims.play('perdio_jugador', true);
+        tiempo_finalizado = false;
+
+      }
 
       this.children.bringToTop(jugador);
       this.physics.pause();
       sonido_muerte_personaje[1] -= delta;
+      
       if(sonido_muerte_personaje[1] <= 0){
+
         sonido_muerte_personaje[0].loop = false;
+
+      }
+
+      if(sonido_muerte_personaje[1] <= -1000){
+
+        musica.stop();
+        vidas_jugador_fin_juego = jugador.vida;
+        this.scene.start('fin_juego');
+
       }
 
       return;
@@ -228,6 +247,10 @@ class Nivel_1 extends Phaser.Scene {
       tiempo_segundo_frames += 1000;
       texto_tiempo.setText("Tiempo: " + tiempo_inicial);
 
+      if(tiempo_inicial == 0){
+        tiempo_finalizado = true;
+      }
+
     }
 
     //  la camara siempre sigue al jugador en el eje vertical a cierta altura
@@ -258,13 +281,6 @@ class Nivel_1 extends Phaser.Scene {
           animacion_jugador_suelo = 'derecha_suelo';
           animacion_jugador_aire = 'derecha_aire';
           jugador.setVelocityX(250);
-
-          if(musica[1]){
-            
-            musica[0].play();
-            musica[1] = false;
-
-          }
 
         }
         else{
@@ -528,7 +544,8 @@ class Nivel_1 extends Phaser.Scene {
   agregarMusicaSonidos(){
 
     //  algunos sonidos y música estarán dentro de un arreglo, porque su comportamiento será diferente en diferentes puntos del juego dependiendo de las acciones del jugador
-    musica = [this.sound.add('musica_nivel_1', {volume: 0.2, loop: true}), true];
+    musica = this.sound.add('musica_nivel_1', {volume: 0.2, loop: true});
+    musica.play();
     sonido_salto_personaje = [this.sound.add('salto_personaje', {volume: 0.5}), true];
     sonido_caida_personaje = [this.sound.add('caida_personaje', {volume: 0.5}), false];
     sonido_disparo_personaje = this.sound.add('disparo_personaje', {volume: 0.5});
