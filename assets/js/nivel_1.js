@@ -8,6 +8,8 @@ class Nivel_1 extends Phaser.Scene {
 
   create () {
 
+    torreta_disparo_izquierda = false;
+
     //  se crea la imagen de fondo y se repiten las veces que sea necesario para hacer el nivel largo
     let posicion_y = 0;
     for (let i = 0; i < 12; i++) {
@@ -57,6 +59,13 @@ class Nivel_1 extends Phaser.Scene {
     //  se crea al jugador con algunas propiedades
     this.crearJugador();
 
+    torreta = this.physics.add.sprite(450, 100, 'torreta');
+    torreta.body.immovable = true;
+    //torreta.body.moves = false;
+    torreta.body.setAllowGravity(false);
+    torreta.setCollideWorldBounds(false);
+    torreta.setScale(-1, 1);
+
     //  se crean todos los drones del nivel con sus atributos
     this.crearDrones();
 
@@ -105,10 +114,49 @@ class Nivel_1 extends Phaser.Scene {
 
     });
 
+    Bala_torreta = new Phaser.Class({
+
+      Extends: Phaser.Physics.Arcade.Sprite,
+      initialize:
+
+      //  constructor de bala
+      function Bala (scene)
+      {
+
+        Phaser.Physics.Arcade.Sprite.call(this, scene, 0, 0, 'bala_enemiga');
+        scene.add.existing(this);
+        scene.physics.add.existing(this);
+
+      },
+
+      //  cada vez que se dispara una bala
+      disparo: function (torreta_elegida)
+      {
+
+        this.setPosition(torreta_elegida.x + (Math.cos(torreta_elegida.rotation) * 70), torreta_elegida.y + (Math.sin(torreta_elegida.rotation) * 70));
+        this.setRotation(torreta_elegida.rotation - 1.57);
+        this.setVelocity(Math.cos(torreta_elegida.rotation) * 400, Math.sin(torreta_elegida.rotation) * 400);
+        this.setTint((0xff0000));
+        this.body.setAllowGravity(false);
+        this.setActive(true);
+        this.setVisible(true);
+        this.setCollideWorldBounds(false);
+
+      },
+
+    });
+
     //  se hace un conjunto de balas
     balas = this.add.group({
 
       classType: Bala,
+      runChildUpdate: true
+
+    });
+
+    balas_torreta = this.add.group({
+
+      classType: Bala_torreta,
       runChildUpdate: true
 
     });
@@ -187,6 +235,23 @@ class Nivel_1 extends Phaser.Scene {
 
     }
 
+    let pos_jug_x = jugador.x;
+    let pos_jug_y;
+    if(torreta_disparo_izquierda){
+      pos_jug_y = jugador.y - 24;
+    }
+    else{
+      pos_jug_y = jugador.y + 24;
+    }
+
+    let pos_tor_x = torreta.x;
+    let pos_tor_y = torreta.y;
+    
+    let angulo = Phaser.Math.Angle.Between(pos_tor_x, pos_tor_y, pos_jug_x, pos_jug_y);
+    //angulo = (angulo + Math.PI/2) * Phaser.Math.RAD_TO_DEG;
+    torreta.setRotation(angulo);
+    //torreta.setVelocity(Math.cos(torreta.rotation) * 100, Math.sin(torreta.rotation) * 100);
+
     //  si el jugador está en el aire, el sonido de choque con el suelo se activa para sonar después
     if(!jugador.body.onFloor()){
       
@@ -263,6 +328,7 @@ class Nivel_1 extends Phaser.Scene {
       animacion_jugador_suelo = 'izquierda_suelo';
       animacion_jugador_aire = 'izquierda_aire';
       jugador.setVelocityX(-250);
+      torreta_disparo_izquierda = true;
 
     }
     else{
@@ -272,6 +338,7 @@ class Nivel_1 extends Phaser.Scene {
         animacion_jugador_suelo = 'izquierda_suelo';
         animacion_jugador_aire = 'izquierda_aire';
         jugador.setVelocityX(-250);
+        torreta_disparo_izquierda = true;
 
       }
       else{
@@ -281,6 +348,7 @@ class Nivel_1 extends Phaser.Scene {
           animacion_jugador_suelo = 'derecha_suelo';
           animacion_jugador_aire = 'derecha_aire';
           jugador.setVelocityX(250);
+          torreta_disparo_izquierda = false;
 
         }
         else{
@@ -290,6 +358,7 @@ class Nivel_1 extends Phaser.Scene {
             animacion_jugador_suelo = 'derecha_suelo';
             animacion_jugador_aire = 'derecha_aire';
             jugador.setVelocityX(250);
+            torreta_disparo_izquierda = false;
 
           }
           else{
@@ -327,6 +396,7 @@ class Nivel_1 extends Phaser.Scene {
     }
 
     //  el personaje dispara cuando está en el aire, y hay una pequeña demora entre los disparos
+    
     if (cursores.space.isDown && !jugador.body.onFloor() && time > ultimo_disparo)
     {
 
@@ -342,6 +412,21 @@ class Nivel_1 extends Phaser.Scene {
         balita.disparo(jugador.x, jugador.y);
         sonido_disparo_personaje.play();
         ultimo_disparo = time + 300;
+
+      }
+
+    }
+
+    if (time > cadencia_de_fuego)
+    {
+
+      var balita_enemiga = balas_torreta.get();
+
+      if (balita_enemiga)
+      {
+        balita_enemiga.disparo(torreta);
+        sonido_disparo_personaje.play();
+        cadencia_de_fuego = time + 2000;
 
       }
 
@@ -363,7 +448,7 @@ class Nivel_1 extends Phaser.Scene {
 
         for (let index = 28; index < 28 + (64 * 7); index += 64) {
 
-          let aleatorio = Phaser.Math.Between(1,100)
+          let aleatorio = Phaser.Math.Between(1,100);
 
           if((indice_y < 1500) || (indice_y > 1500 && aleatorio <= 75)){
 

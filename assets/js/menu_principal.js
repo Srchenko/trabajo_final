@@ -38,6 +38,10 @@ class Menu_Principal extends Phaser.Scene {
     this.load.image('tile_superficie_rompible_3', 'assets/images/tile_superficie_rompible_3.png');
     this.load.image('tile_superficie_rompible_4', 'assets/images/tile_superficie_rompible_4.png');
 
+    //  se cargan las imágenes del nivel 2
+    this.load.image('torreta', 'assets/images/torreta.png');
+    this.load.image('bala_enemiga', 'assets/images/bala_enemiga.png');
+
     //  se cargan las imágenes del fin de juego
     this.load.image('fin_juego', 'assets/images/fin_juego.png');
 
