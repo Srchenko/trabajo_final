@@ -37,9 +37,22 @@ class Menu_Principal extends Phaser.Scene {
     this.load.image('tile_superficie_rompible_2', 'assets/images/tile_superficie_rompible_2.png');
     this.load.image('tile_superficie_rompible_3', 'assets/images/tile_superficie_rompible_3.png');
     this.load.image('tile_superficie_rompible_4', 'assets/images/tile_superficie_rompible_4.png');
+    
+    //  se cargan las imágenes del nivel 2
+    this.load.image('base', 'assets/images/base.png');
+
+    //  se cargan las imágenes del tilemap del nivel 2
+    this.load.image('bordes_nivel_2', 'assets/images/bordes_nivel_2.png');
+    this.load.image('tile_superficie_rompible_base_1', 'assets/images/tile_superficie_rompible_base_1.png');
+    this.load.image('tile_superficie_rompible_base_2', 'assets/images/tile_superficie_rompible_base_2.png');
+    this.load.image('tile_superficie_rompible_base_3', 'assets/images/tile_superficie_rompible_base_3.png');
+    this.load.image('tile_superficie_rompible_base_4', 'assets/images/tile_superficie_rompible_base_4.png');
+    this.load.image('tile_suelo_base', 'assets/images/tile_suelo_base.png');
+    this.load.image('tile_superficie_suelo_base', 'assets/images/tile_superficie_suelo_base.png');
 
     //  se cargan las imágenes del fin de juego
     this.load.image('fin_juego', 'assets/images/fin_juego.png');
+    
 
     //  se cargan los spritesheets
     this.load.spritesheet('jugador_movimiento', 'assets/images/jugador_movimiento.png', { frameWidth: 26, frameHeight: 48});
@@ -48,6 +61,7 @@ class Menu_Principal extends Phaser.Scene {
 
     //  se carga los tiles de un tilemap
     this.load.tilemapTiledJSON('level_1', 'assets/js/nivel_1.json');
+    this.load.tilemapTiledJSON('level_2', 'assets/js/nivel_2.json');
 
     //  se carga la música y los sonidos
     this.load.audio('musica_nivel_1', 'assets/audio/musica_nivel_1.mp3');
@@ -177,7 +191,7 @@ class Menu_Principal extends Phaser.Scene {
       if(!imagen_inicio.visible){
 
         musica.stop();
-        this.scene.start('nivel_1');
+        this.scene.start('nivel_2');
 
       }
     })

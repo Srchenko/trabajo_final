@@ -28,7 +28,7 @@ class Fin_juego extends Phaser.Scene {
     })
     reiniciar.on('pointerdown', () => {
       this.reiniciarAtributos();
-      this.scene.start('nivel_1');
+      this.scene.start('nivel_2');
     })
 
     //  se crea un botón que vuelve al menú principal
