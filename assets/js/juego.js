@@ -7,7 +7,7 @@ var config = {
       arcade: {
           tileBias: 32,
           gravity: { y: 700 },
-          debug: false
+          debug: true
       }
   },
   scene: [Menu_Principal, Creditos, Nivel_1, Nivel_2, Fin_juego],
@@ -27,11 +27,16 @@ var plataformas_rompibles;
 var plataformas_no_rompibles;
 
 var balas;
+var balas_torreta;
 var ultimo_disparo = 0;
+var cadencia_de_fuego = 2000;
 var Bala;
+var Bala_torreta;
 
 var dron;
 var items;
+var torreta;
+var torreta_disparo_izquierda;
 
 var animacion_jugador_suelo;
 var animacion_jugador_aire;
