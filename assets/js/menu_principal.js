@@ -40,6 +40,9 @@ class Menu_Principal extends Phaser.Scene {
     
     //  se cargan las imágenes del nivel 2
     this.load.image('base', 'assets/images/base.png');
+    this.load.image('torreta', 'assets/images/torreta.png');
+    this.load.image('base_torreta', 'assets/images/base_torreta.png');
+    this.load.image('bala_enemiga', 'assets/images/bala_enemiga.png');
 
     //  se cargan las imágenes del tilemap del nivel 2
     this.load.image('bordes_nivel_2', 'assets/images/bordes_nivel_2.png');
@@ -49,10 +52,6 @@ class Menu_Principal extends Phaser.Scene {
     this.load.image('tile_superficie_rompible_base_4', 'assets/images/tile_superficie_rompible_base_4.png');
     this.load.image('tile_suelo_base', 'assets/images/tile_suelo_base.png');
     this.load.image('tile_superficie_suelo_base', 'assets/images/tile_superficie_suelo_base.png');
-
-    //  se cargan las imágenes del nivel 2
-    this.load.image('torreta', 'assets/images/torreta.png');
-    this.load.image('bala_enemiga', 'assets/images/bala_enemiga.png');
 
     //  se cargan las imágenes del fin de juego
     this.load.image('fin_juego', 'assets/images/fin_juego.png');
@@ -69,11 +68,14 @@ class Menu_Principal extends Phaser.Scene {
 
     //  se carga la música y los sonidos
     this.load.audio('musica_nivel_1', 'assets/audio/musica_nivel_1.mp3');
+    this.load.audio('musica_nivel_2', 'assets/audio/musica_nivel_2.mp3');
+    this.load.audio('musica_fin_juego', 'assets/audio/musica_fin_juego.mp3');
     this.load.audio('musica_menu_principal', 'assets/audio/musica_menu_principal.mp3');
 
     this.load.audio('caida_personaje', 'assets/audio/caida_personaje.mp3');
     this.load.audio('salto_personaje', 'assets/audio/salto_personaje.mp3');
     this.load.audio('disparo_personaje', 'assets/audio/disparo_personaje.mp3');
+    this.load.audio('disparo_torreta', 'assets/audio/disparo_torreta.mp3');
     this.load.audio('danio_personaje', 'assets/audio/danio_personaje.mp3');
     this.load.audio('danio_enemigo', 'assets/audio/danio_enemigo.mp3');
     this.load.audio('enemigo_destruido', 'assets/audio/enemigo_destruido.mp3');
@@ -178,8 +180,11 @@ class Menu_Principal extends Phaser.Scene {
       presiona_cualquier_tecla = true;
     });
 
-    musica = this.sound.add('musica_menu_principal', {volume: 0.2, loop: true});
+    if(musica == undefined){
 
+      musica = this.sound.add('musica_menu_principal', {volume: 0.2, loop: true});
+
+    }
     //  los botones de jugar y créditos se hacen interactivos
     //  hacen diferentes cosas dependiendo si se pasa el mouse por encima o se lo quita, y también cuando se les hace click se abren las escenas correspondientes
     jugar.setInteractive();
@@ -209,7 +214,6 @@ class Menu_Principal extends Phaser.Scene {
     creditos.on('pointerdown', () => {
       if(!imagen_inicio.visible){
 
-        musica.stop();
         this.scene.start('creditos');
 
       }
@@ -223,7 +227,9 @@ class Menu_Principal extends Phaser.Scene {
     //  al presionarse cualquier tecla o botón del mouse, empieza la música y se deja de ver la imagen de inicio
     if(imagen_inicio.visible && presiona_cualquier_tecla){
 
-      musica.play();
+      if(!musica.isPlaying){
+        musica.play();
+      }
       imagen_inicio.visible = false;
       
     }

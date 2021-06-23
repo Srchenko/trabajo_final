@@ -11,7 +11,7 @@ class Creditos extends Phaser.Scene {
     this.add.image(0, 0, 'menu_principal').setOrigin(0);
 
     //  texto mostrando las personas y organizaciones que participaron en el desarrollo del juego
-    let texto_creditos = '[size=20]Universidad[/size]\n[size=24][b]UNRaf[/b][/size]\n\n[size=20]Team Reptiliano[/size]\n[size=24][b]Leandro Airaudo\nSergio Bressán[/size][/b]\n\n[size=20]Música[/size]\n[size=24][b]"Bamboo Groove" by Lunar,\nused under CC BY /\nDesaturated from original\n\n[/b][/size]';
+    let texto_creditos = '[size=20]Universidad[/size]\n[size=24][b]UNRaf[/b][/size]\n\n[size=20]Team Reptiliano[/size]\n[size=24][b]Leandro Airaudo\nSergio Bressán[/size][/b]\n\n[size=20]Música[/size]\n[size=24][b]"Complexity Kills" by Lunar,\nused under CC BY /\nDesaturated from original\n\n[/b][/size]';
     let creditos = this.add.rexBBCodeText(config.width / 2, config.height / 2, texto_creditos, { align: 'center', fontFamily: 'Helvetica', fill: '#000', lineSpacing: 8});
     creditos.setOrigin(0.5);
 

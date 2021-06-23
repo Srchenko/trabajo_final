@@ -44,27 +44,11 @@ class Nivel_1 extends Phaser.Scene {
     plataforma_hecha.setCollisionByProperty({collides:true});
     costado_hecho.setCollisionByProperty({collides:true});
 
-    //  sirve para ver si los tiles tienen colisión o no
-
-    // const debugGraphics = this.add.graphics().setAlpha(0.7);
-    // plataforma_hecha.renderDebug(debugGraphics, {
-    //   tileColor: null,
-    //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
-    //   faceColor: new Phaser.Display.Color(40, 39, 37, 255)
-    // })
-
     //  se crean bordes invisibles para que los drones en movimiento no salgan de ciertos límites
     this.crearBordesInvisibles();
 
     //  se crea al jugador con algunas propiedades
     this.crearJugador();
-
-    torreta = this.physics.add.sprite(450, 100, 'torreta');
-    torreta.body.immovable = true;
-    //torreta.body.moves = false;
-    torreta.body.setAllowGravity(false);
-    torreta.setCollideWorldBounds(false);
-    torreta.setScale(-1, 1);
 
     //  se crean todos los drones del nivel con sus atributos
     this.crearDrones();
@@ -114,49 +98,10 @@ class Nivel_1 extends Phaser.Scene {
 
     });
 
-    Bala_torreta = new Phaser.Class({
-
-      Extends: Phaser.Physics.Arcade.Sprite,
-      initialize:
-
-      //  constructor de bala
-      function Bala (scene)
-      {
-
-        Phaser.Physics.Arcade.Sprite.call(this, scene, 0, 0, 'bala_enemiga');
-        scene.add.existing(this);
-        scene.physics.add.existing(this);
-
-      },
-
-      //  cada vez que se dispara una bala
-      disparo: function (torreta_elegida)
-      {
-
-        this.setPosition(torreta_elegida.x + (Math.cos(torreta_elegida.rotation) * 70), torreta_elegida.y + (Math.sin(torreta_elegida.rotation) * 70));
-        this.setRotation(torreta_elegida.rotation - 1.57);
-        this.setVelocity(Math.cos(torreta_elegida.rotation) * 400, Math.sin(torreta_elegida.rotation) * 400);
-        this.setTint((0xff0000));
-        this.body.setAllowGravity(false);
-        this.setActive(true);
-        this.setVisible(true);
-        this.setCollideWorldBounds(false);
-
-      },
-
-    });
-
     //  se hace un conjunto de balas
     balas = this.add.group({
 
       classType: Bala,
-      runChildUpdate: true
-
-    });
-
-    balas_torreta = this.add.group({
-
-      classType: Bala_torreta,
       runChildUpdate: true
 
     });
@@ -205,6 +150,7 @@ class Nivel_1 extends Phaser.Scene {
     //  se dirige a la pantalla de fin de juego luego de la animación correspondiente
     if(jugador.vida == 0 || tiempo_inicial == 0){
 
+      musica.stop();
       if(tiempo_finalizado){
 
         sonido_muerte_personaje[0].play();
@@ -225,7 +171,6 @@ class Nivel_1 extends Phaser.Scene {
 
       if(sonido_muerte_personaje[1] <= -1000){
 
-        musica.stop();
         vidas_jugador_fin_juego = jugador.vida;
         this.scene.start('fin_juego');
 
@@ -234,23 +179,6 @@ class Nivel_1 extends Phaser.Scene {
       return;
 
     }
-
-    let pos_jug_x = jugador.x;
-    let pos_jug_y;
-    if(torreta_disparo_izquierda){
-      pos_jug_y = jugador.y - 24;
-    }
-    else{
-      pos_jug_y = jugador.y + 24;
-    }
-
-    let pos_tor_x = torreta.x;
-    let pos_tor_y = torreta.y;
-    
-    let angulo = Phaser.Math.Angle.Between(pos_tor_x, pos_tor_y, pos_jug_x, pos_jug_y);
-    //angulo = (angulo + Math.PI/2) * Phaser.Math.RAD_TO_DEG;
-    torreta.setRotation(angulo);
-    //torreta.setVelocity(Math.cos(torreta.rotation) * 100, Math.sin(torreta.rotation) * 100);
 
     //  si el jugador está en el aire, el sonido de choque con el suelo se activa para sonar después
     if(!jugador.body.onFloor()){
@@ -328,7 +256,6 @@ class Nivel_1 extends Phaser.Scene {
       animacion_jugador_suelo = 'izquierda_suelo';
       animacion_jugador_aire = 'izquierda_aire';
       jugador.setVelocityX(-250);
-      torreta_disparo_izquierda = true;
 
     }
     else{
@@ -338,7 +265,6 @@ class Nivel_1 extends Phaser.Scene {
         animacion_jugador_suelo = 'izquierda_suelo';
         animacion_jugador_aire = 'izquierda_aire';
         jugador.setVelocityX(-250);
-        torreta_disparo_izquierda = true;
 
       }
       else{
@@ -348,7 +274,6 @@ class Nivel_1 extends Phaser.Scene {
           animacion_jugador_suelo = 'derecha_suelo';
           animacion_jugador_aire = 'derecha_aire';
           jugador.setVelocityX(250);
-          torreta_disparo_izquierda = false;
 
         }
         else{
@@ -358,7 +283,6 @@ class Nivel_1 extends Phaser.Scene {
             animacion_jugador_suelo = 'derecha_suelo';
             animacion_jugador_aire = 'derecha_aire';
             jugador.setVelocityX(250);
-            torreta_disparo_izquierda = false;
 
           }
           else{
@@ -412,21 +336,6 @@ class Nivel_1 extends Phaser.Scene {
         balita.disparo(jugador.x, jugador.y);
         sonido_disparo_personaje.play();
         ultimo_disparo = time + 300;
-
-      }
-
-    }
-
-    if (time > cadencia_de_fuego)
-    {
-
-      var balita_enemiga = balas_torreta.get();
-
-      if (balita_enemiga)
-      {
-        balita_enemiga.disparo(torreta);
-        sonido_disparo_personaje.play();
-        cadencia_de_fuego = time + 2000;
 
       }
 

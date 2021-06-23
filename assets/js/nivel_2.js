@@ -8,6 +8,7 @@ class Nivel_2 extends Phaser.Scene {
 
   create () {
 
+    torreta_disparo_izquierda = false;
     //  se crea la imagen de fondo y se repiten las veces que sea necesario para hacer el nivel largo
     let posicion_y = 0;
     for (let i = 0; i < 12; i++) {
@@ -38,10 +39,19 @@ class Nivel_2 extends Phaser.Scene {
     costado_hecho.setCollisionByProperty({colision:true});
 
     //  se crean bordes invisibles para que los drones en movimiento no salgan de ciertos límites
-    this.crearBordesInvisibles();
+    this.crearZonasInvisiblesParaJugador();
 
     //  se crea al jugador con algunas propiedades
     this.crearJugador();
+
+    this.add.image(0, 475, 'base_torreta').setOrigin(0);
+    torreta = this.physics.add.sprite(20, 500, 'torreta').setOrigin(0);
+    torreta.body.immovable = true;
+    torreta.body.setAllowGravity(false);
+    torreta.setCollideWorldBounds(false);
+    torreta.activar_torreta = false;
+    torreta.cadencia_de_fuego = 0;
+    torreta.setRotation(-0.2);
 
     //  se crean todos los colleccionables con sus atributos
     this.crearColeccionables();
@@ -88,10 +98,49 @@ class Nivel_2 extends Phaser.Scene {
 
     });
 
+    Bala_torreta = new Phaser.Class({
+
+      Extends: Phaser.Physics.Arcade.Sprite,
+      initialize:
+
+      //  constructor de bala
+      function Bala (scene)
+      {
+
+        Phaser.Physics.Arcade.Sprite.call(this, scene, 0, 0, 'bala_enemiga');
+        scene.add.existing(this);
+        scene.physics.add.existing(this);
+
+      },
+
+      //  cada vez que se dispara una bala
+      disparo: function (torreta_elegida)
+      {
+
+        this.setPosition(torreta_elegida.x + (Math.cos(torreta_elegida.rotation) * 70), torreta_elegida.y + (Math.sin(torreta_elegida.rotation) * 70));
+        this.setRotation(torreta_elegida.rotation - 1.57);
+        this.setVelocity(Math.cos(torreta_elegida.rotation) * 600, Math.sin(torreta_elegida.rotation) * 600);
+        this.setTint((0xff0000));
+        this.body.setAllowGravity(false);
+        this.setActive(true);
+        this.setVisible(true);
+        this.setCollideWorldBounds(false);
+
+      },
+
+    });
+
     //  se hace un conjunto de balas
     balas = this.add.group({
 
       classType: Bala,
+      runChildUpdate: true
+
+    });
+
+    balas_torreta = this.add.group({
+
+      classType: Bala_torreta,
       runChildUpdate: true
 
     });
@@ -112,11 +161,15 @@ class Nivel_2 extends Phaser.Scene {
     //this.physics.add.collider(balas, dron, this.desaparecerBalaConDron, null, this);
     //this.physics.add.collider(balas, base, this.desaparecerBala, null, this);
 
-    //jugador_overlap = this.physics.add.overlap(jugador, dron, this.bajarVidaJugador, null, this);
+    this.physics.add.collider(balas_torreta, plataformas_no_rompibles, this.desaparecerBala, null, this);
+    this.physics.add.collider(balas_torreta, plataformas_rompibles, this.desaparecerBalaConPlataforma, null, this);
+
+    jugador_overlap = this.physics.add.overlap(jugador, balas_torreta, this.bajarVidaJugador, null, this);
     this.physics.add.collider(jugador, plataformas_no_rompibles, this.sonidosJugador, null, this);
     this.physics.add.collider(jugador, plataformas_rompibles, this.sonidosJugador, null, this);
     //this.physics.add.collider(jugador, base);
     this.physics.add.overlap(jugador, items, this.recolectarItem, null, this);
+    this.physics.add.overlap(jugador, bordes_invisibles, this.activarDesactivarTorreta, null, this);
     
     //this.physics.add.collider(dron);
     //this.physics.add.collider(dron, plataformas_no_rompibles);
@@ -135,6 +188,7 @@ class Nivel_2 extends Phaser.Scene {
     //  se dirige a la pantalla de fin de juego luego de la animación correspondiente
     if(jugador.vida == 0 || tiempo_inicial == 0){
 
+      musica.stop();
       if(tiempo_finalizado){
 
         sonido_muerte_personaje[0].play();
@@ -155,7 +209,6 @@ class Nivel_2 extends Phaser.Scene {
 
       if(sonido_muerte_personaje[1] <= -1000){
 
-        musica.stop();
         vidas_jugador_fin_juego = jugador.vida;
         this.scene.start('fin_juego');
 
@@ -191,31 +244,31 @@ class Nivel_2 extends Phaser.Scene {
 
     }
     
-    //  sucede cuando el jugador choca con un enemigo, el jugador es invencible por 2 segundos
-    // if(!jugador_overlap.active){
+    //  sucede cuando el jugador recibe daño, el jugador es invencible por 2 segundos
+    if(!jugador_overlap.active){
 
-    //   espera_un_segundo_capo += delta;
+      espera_un_segundo_capo += delta;
 
-    //   //  el jugador cambia entre un tono rojizo y transparente durante 2 segundos indicando su invencibilidad 
-    //   if((espera_un_segundo_capo >= 0 && espera_un_segundo_capo <= 250) || (espera_un_segundo_capo >= 500 && espera_un_segundo_capo <= 750) || (espera_un_segundo_capo >= 1000 && espera_un_segundo_capo <= 1250) || (espera_un_segundo_capo >= 1500 && espera_un_segundo_capo <= 1750)){
+      //  el jugador cambia entre un tono rojizo y transparente durante 2 segundos indicando su invencibilidad 
+      if((espera_un_segundo_capo >= 0 && espera_un_segundo_capo <= 250) || (espera_un_segundo_capo >= 500 && espera_un_segundo_capo <= 750) || (espera_un_segundo_capo >= 1000 && espera_un_segundo_capo <= 1250) || (espera_un_segundo_capo >= 1500 && espera_un_segundo_capo <= 1750)){
 
-    //     jugador.setTint(0xff0000);
+        jugador.setTint(0xff0000);
 
-    //   }
-    //   else{
+      }
+      else{
 
-    //     jugador.setTint(0xffffff);
+        jugador.setTint(0xffffff);
 
-    //   }
-      
-    //   if(espera_un_segundo_capo >= 2000){
+      }
+        
+      if(espera_un_segundo_capo >= 2000){
 
-    //     jugador_overlap.active = true;
-    //     espera_un_segundo_capo = 0;
+        jugador_overlap.active = true;
+        espera_un_segundo_capo = 0;
 
-    //   }
+      }
 
-    // }
+    }
 
     //  sirve para ir restando el tiempo del nivel y que se vea en el hud
     tiempo_segundo_frames -= delta;
@@ -241,6 +294,7 @@ class Nivel_2 extends Phaser.Scene {
       animacion_jugador_suelo = 'izquierda_suelo';
       animacion_jugador_aire = 'izquierda_aire';
       jugador.setVelocityX(-250);
+      torreta_disparo_izquierda = true;
 
     }
     else{
@@ -250,6 +304,7 @@ class Nivel_2 extends Phaser.Scene {
         animacion_jugador_suelo = 'izquierda_suelo';
         animacion_jugador_aire = 'izquierda_aire';
         jugador.setVelocityX(-250);
+        torreta_disparo_izquierda = true;
 
       }
       else{
@@ -259,6 +314,7 @@ class Nivel_2 extends Phaser.Scene {
           animacion_jugador_suelo = 'derecha_suelo';
           animacion_jugador_aire = 'derecha_aire';
           jugador.setVelocityX(250);
+          torreta_disparo_izquierda = false;
 
         }
         else{
@@ -268,6 +324,7 @@ class Nivel_2 extends Phaser.Scene {
             animacion_jugador_suelo = 'derecha_suelo';
             animacion_jugador_aire = 'derecha_aire';
             jugador.setVelocityX(250);
+            torreta_disparo_izquierda = false;
 
           }
           else{
@@ -325,6 +382,49 @@ class Nivel_2 extends Phaser.Scene {
 
     }
 
+    if(torreta.activar_torreta){
+
+      let pos_jug_x = jugador.x;
+      let pos_jug_y;
+      if(torreta_disparo_izquierda){
+
+        pos_jug_y = jugador.y - 12;
+
+      }
+      else{
+
+        pos_jug_y = jugador.y + 12;
+
+      }
+
+      let pos_tor_x = torreta.x;
+      let pos_tor_y = torreta.y;
+      
+      let angulo = Phaser.Math.Angle.Between(pos_tor_x, pos_tor_y, pos_jug_x, pos_jug_y);
+      if(angulo < -0.2){
+
+        angulo = -0.2;
+
+      }
+      torreta.setRotation(angulo);
+
+      if (time > torreta.cadencia_de_fuego)
+      {
+
+        var balita_enemiga = balas_torreta.get();
+
+        if (balita_enemiga)
+        {
+          balita_enemiga.disparo(torreta);
+          sonido_disparo_torreta.play();
+          torreta.cadencia_de_fuego = time + 1500;
+
+        }
+
+      }
+
+    }
+
   }
 
   crearPlataformasRompibles(){
@@ -352,23 +452,17 @@ class Nivel_2 extends Phaser.Scene {
 
   }
 
-  crearBordesInvisibles(){
+  crearZonasInvisiblesParaJugador(){
 
     bordes_invisibles = this.physics.add.staticGroup();
-    bordes_invisibles.create(252, 2550, 'pared_invisible_horizontal');
-    bordes_invisibles.create(252, 2950, 'pared_invisible_horizontal');
-    bordes_invisibles.create(252, 4075, 'pared_invisible_horizontal');
-    bordes_invisibles.create(252, 4475, 'pared_invisible_horizontal');
-    bordes_invisibles.create(252, 6710, 'pared_invisible_horizontal');
-    bordes_invisibles.create(252, 7275, 'pared_invisible_horizontal');
-    bordes_invisibles.create(252, 7990, 'pared_invisible_horizontal');
-    bordes_invisibles.create(252, 9115, 'pared_invisible_horizontal');
+    bordes_invisibles.create(252, 425, 'pared_invisible_horizontal');
+    bordes_invisibles.create(252, 950, 'pared_invisible_horizontal');
 
   }
 
   crearJugador(){
 
-    jugador = this.physics.add.sprite(75, 200, 'jugador_movimiento');
+    jugador = this.physics.add.sprite(225, 100, 'jugador_movimiento');
     jugador.setSize(18, 48, true);
     jugador.vida = 3;
     animacion_jugador_suelo = 'derecha_suelo';
@@ -510,11 +604,12 @@ class Nivel_2 extends Phaser.Scene {
   agregarMusicaSonidos(){
 
     //  algunos sonidos y música estarán dentro de un arreglo, porque su comportamiento será diferente en diferentes puntos del juego dependiendo de las acciones del jugador
-    musica = this.sound.add('musica_nivel_1', {volume: 0.2, loop: true});
+    musica = this.sound.add('musica_nivel_2', {volume: 0.2, loop: true});
     musica.play();
     sonido_salto_personaje = [this.sound.add('salto_personaje', {volume: 0.5}), true];
     sonido_caida_personaje = [this.sound.add('caida_personaje', {volume: 0.5}), false];
     sonido_disparo_personaje = this.sound.add('disparo_personaje', {volume: 0.5});
+    sonido_disparo_torreta = this.sound.add('disparo_torreta', {volume: 0.5});
     sonido_danio_personaje = this.sound.add('danio_personaje', {volume: 0.5});
     sonido_danio_enemigo = this.sound.add('danio_enemigo', {volume: 0.5});
     sonido_enemigo_destruido = this.sound.add('enemigo_destruido', {volume: 0.5});
@@ -575,8 +670,9 @@ class Nivel_2 extends Phaser.Scene {
 
   }
 
-  bajarVidaJugador(jugador_elegido, dron_elegido){
+  bajarVidaJugador(jugador_elegido, bala_enemiga_elegida){
 
+    bala_enemiga_elegida.destroy();
     //  se actualiza el hud con las vidas del jugador
     jugador_elegido.vida--;
     texto_vidas.setText("Vidas: " + jugador_elegido.vida);
@@ -659,6 +755,26 @@ class Nivel_2 extends Phaser.Scene {
 
       sonido_caida_personaje[0].play();
       sonido_caida_personaje[1] = false;
+
+    }
+
+  }
+
+  activarDesactivarTorreta(jugador_elegido, borde_elegido){
+
+    if((borde_elegido == bordes_invisibles.getChildren()[0]) && borde_elegido.active){
+
+      torreta.activar_torreta = true;
+      borde_elegido.active = false;
+      return;
+
+    }
+
+    if((borde_elegido == bordes_invisibles.getChildren()[1]) && borde_elegido.active){
+
+      torreta.activar_torreta = false;
+      borde_elegido.active = false;
+      return;
 
     }
 

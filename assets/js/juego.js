@@ -37,6 +37,7 @@ var dron;
 var items;
 var torreta;
 var torreta_disparo_izquierda;
+var activar_torreta;
 
 var animacion_jugador_suelo;
 var animacion_jugador_aire;
@@ -65,6 +66,7 @@ var musica;
 var sonido_salto_personaje;
 var sonido_caida_personaje;
 var sonido_disparo_personaje;
+var sonido_disparo_torreta;
 var sonido_danio_personaje;
 var sonido_danio_enemigo;
 var sonido_enemigo_destruido;

@@ -8,6 +8,9 @@ class Fin_juego extends Phaser.Scene {
 
   create(){
 
+    musica = this.sound.add('musica_fin_juego', {volume: 0.2, loop: true});
+    musica.play();
+
     this.add.image(0, 0, 'fin_juego').setOrigin(0);
 
     //  se pone la información del juego del nivel anterior del que se perdió
@@ -27,6 +30,7 @@ class Fin_juego extends Phaser.Scene {
       reiniciar.setFill('#000');
     })
     reiniciar.on('pointerdown', () => {
+      musica.stop();
       this.reiniciarAtributos();
       this.scene.start('nivel_2');
     })
@@ -44,6 +48,8 @@ class Fin_juego extends Phaser.Scene {
       volver_menu.setFill('#000');
     })
     volver_menu.on('pointerdown', () => {
+      musica.stop();
+      musica = this.sound.add('musica_menu_principal', {volume: 0.2, loop: true});
       this.reiniciarAtributos();
       this.scene.start('menu_principal');
     })
