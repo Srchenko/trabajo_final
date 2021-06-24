@@ -30,6 +30,7 @@ class Fin_juego extends Phaser.Scene {
       reiniciar.setFill('#000');
     })
     reiniciar.on('pointerdown', () => {
+      sonido_interactuar_mouse.play();
       musica.stop();
       this.reiniciarAtributos();
       this.scene.start('nivel_2');
@@ -48,6 +49,7 @@ class Fin_juego extends Phaser.Scene {
       volver_menu.setFill('#000');
     })
     volver_menu.on('pointerdown', () => {
+      sonido_interactuar_mouse.play();
       musica.stop();
       musica = this.sound.add('musica_menu_principal', {volume: 0.2, loop: true});
       this.reiniciarAtributos();

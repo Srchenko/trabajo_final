@@ -44,14 +44,29 @@ class Nivel_2 extends Phaser.Scene {
     //  se crea al jugador con algunas propiedades
     this.crearJugador();
 
-    this.add.image(0, 475, 'base_torreta').setOrigin(0);
-    torreta = this.physics.add.sprite(20, 500, 'torreta').setOrigin(0);
-    torreta.body.immovable = true;
-    torreta.body.setAllowGravity(false);
-    torreta.setCollideWorldBounds(false);
-    torreta.activar_torreta = false;
-    torreta.cadencia_de_fuego = 0;
-    torreta.setRotation(-0.2);
+    torreta = this.physics.add.group();
+    let base_torreta;
+
+    base_torreta = this.add.image(0, 475, 'base_torreta').setOrigin(0);
+    torreta.create(20, 500, 'torreta').setOrigin(0);
+    torreta.getChildren()[0].setRotation(-0.2);
+    torreta.getChildren()[0].max_ang = -0.2;
+
+    base_torreta = this.add.image(200, 1660, 'base_torreta').setOrigin(0);
+    base_torreta.angle = 90;
+    torreta.create(175, 1670, 'torreta').setOrigin(0);
+    torreta.getChildren()[1].setRotation(0);
+    torreta.getChildren()[1].max_ang = 0;
+
+    for (let indice = 0; indice < torreta.getLength(); indice++) {
+
+      torreta.getChildren()[indice].body.immovable = true;
+      torreta.getChildren()[indice].body.setAllowGravity(false);
+      torreta.getChildren()[indice].setCollideWorldBounds(false);
+      torreta.getChildren()[indice].activar_torreta = false;
+      torreta.getChildren()[indice].cadencia_de_fuego = 0;
+      
+    }
 
     //  se crean todos los colleccionables con sus atributos
     this.crearColeccionables();
@@ -382,48 +397,52 @@ class Nivel_2 extends Phaser.Scene {
 
     }
 
-    if(torreta.activar_torreta){
+    torreta.getChildren().forEach(function(hijo){
 
-      let pos_jug_x = jugador.x;
-      let pos_jug_y;
-      if(torreta_disparo_izquierda){
+      if(hijo.activar_torreta){
 
-        pos_jug_y = jugador.y - 12;
-
-      }
-      else{
-
-        pos_jug_y = jugador.y + 12;
-
-      }
-
-      let pos_tor_x = torreta.x;
-      let pos_tor_y = torreta.y;
-      
-      let angulo = Phaser.Math.Angle.Between(pos_tor_x, pos_tor_y, pos_jug_x, pos_jug_y);
-      if(angulo < -0.2){
-
-        angulo = -0.2;
-
-      }
-      torreta.setRotation(angulo);
-
-      if (time > torreta.cadencia_de_fuego)
-      {
-
-        var balita_enemiga = balas_torreta.get();
-
-        if (balita_enemiga)
-        {
-          balita_enemiga.disparo(torreta);
-          sonido_disparo_torreta.play();
-          torreta.cadencia_de_fuego = time + 1500;
-
+        let pos_jug_x = jugador.x;
+        let pos_jug_y;
+        if(torreta_disparo_izquierda){
+  
+          pos_jug_y = jugador.y - 12;
+  
         }
-
+        else{
+  
+          pos_jug_y = jugador.y + 12;
+  
+        }
+  
+        let pos_tor_x = hijo.x;
+        let pos_tor_y = hijo.y;
+        
+        let angulo = Phaser.Math.Angle.Between(pos_tor_x, pos_tor_y, pos_jug_x, pos_jug_y);
+        if(angulo < hijo.max_ang){
+  
+          angulo = hijo.max_ang;
+  
+        }
+        hijo.setRotation(angulo);
+  
+        if (time > hijo.cadencia_de_fuego)
+        {
+  
+          var balita_enemiga = balas_torreta.get();
+  
+          if (balita_enemiga)
+          {
+            balita_enemiga.disparo(hijo);
+            sonido_disparo_torreta.play();
+            hijo.cadencia_de_fuego = time + 1500;
+  
+          }
+  
+        }
+  
       }
 
-    }
+    }, this);
 
   }
 
@@ -616,6 +635,8 @@ class Nivel_2 extends Phaser.Scene {
     bordes_invisibles = this.physics.add.staticGroup();
     bordes_invisibles.create(252, 425, 'pared_invisible_horizontal');
     bordes_invisibles.create(252, 950, 'pared_invisible_horizontal');
+    bordes_invisibles.create(252, 1666, 'pared_invisible_horizontal');
+    bordes_invisibles.create(252, 2200, 'pared_invisible_horizontal');
 
   }
 
@@ -730,7 +751,7 @@ class Nivel_2 extends Phaser.Scene {
    
 
     //  se les da atributos a todos los items
-    for (let indice = 0; indice < 16; indice++) {
+    for (let indice = 0; indice < items.getLength(); indice++) {
 
       items.getChildren()[indice].body.immovable = true;
       items.getChildren()[indice].body.moves = false;
@@ -741,7 +762,17 @@ class Nivel_2 extends Phaser.Scene {
       }
       else{
 
-        items.getChildren()[indice].puntos = 10;
+        if(items.getChildren()[indice].texture.key == 'item_2'){
+
+          items.getChildren()[indice].puntos = 10;
+
+        }
+
+        else{
+
+          items.getChildren()[indice].puntos = 20;
+
+        }
 
       }
 
@@ -785,6 +816,7 @@ class Nivel_2 extends Phaser.Scene {
     sonido_muerte_personaje = [this.sound.add('muerte_personaje', {volume: 0.5, loop: true}), 2000];
     sonido_juntar_moneda = this.sound.add('juntar_moneda', {volume: 0.5});
     sonido_juntar_cronometro = this.sound.add('juntar_cronometro', {volume: 0.5});
+    sonido_juntar_vida = this.sound.add('juntar_vida', {volume: 0.5});
 
   }
 
@@ -884,7 +916,18 @@ class Nivel_2 extends Phaser.Scene {
     }
     else{
 
+      if (item_elegido.puntos == 20){
+
+      sonido_juntar_vida.play();
+      jugador.vida++;
+      this.vidaMax();
+
+      }
+      else{
+
       sonido_juntar_moneda.play();
+
+      }
 
     }
 
@@ -895,21 +938,49 @@ class Nivel_2 extends Phaser.Scene {
   tiempoMax(){
 
     if(tiempo_inicial > 60){
+
       tiempo_inicial = 60;
       tiempo_segundo_frames = 1000;
+
     }
+
     texto_tiempo.setText("Tiempo: " + tiempo_inicial);
+
+  }
+
+  vidaMax(){
+
+    if(jugador.vida > 3){
+
+      jugador.vida = 3;
+
+    }
+
+    texto_vidas.setText("Vidas: " + jugador.vida);
 
   }
 
   itemAleatorio(){
 
-    let aleatorio = Phaser.Math.Between(1,2);
-    if(aleatorio == 2){
-      return 'item_2';
+    let aleatorio = Phaser.Math.Between(1,3);
+    if(aleatorio == 1){
+
+      return 'item_1';
+
     }
     else{
-      return 'item_1';
+      if(aleatorio == 2){
+
+        return 'item_2';
+
+      }
+
+      else{
+
+        return 'item_3';
+
+      }
+
     }
 
   }
@@ -932,7 +1003,7 @@ class Nivel_2 extends Phaser.Scene {
 
     if((borde_elegido == bordes_invisibles.getChildren()[0]) && borde_elegido.active){
 
-      torreta.activar_torreta = true;
+      torreta.getChildren()[0].activar_torreta = true;
       borde_elegido.active = false;
       return;
 
@@ -940,15 +1011,29 @@ class Nivel_2 extends Phaser.Scene {
 
     if((borde_elegido == bordes_invisibles.getChildren()[1]) && borde_elegido.active){
 
-      torreta.activar_torreta = false;
+      torreta.getChildren()[0].activar_torreta = false;
+      borde_elegido.active = false;
+      return;
+
+    }
+
+    if((borde_elegido == bordes_invisibles.getChildren()[2]) && borde_elegido.active){
+
+      torreta.getChildren()[1].activar_torreta = true;
+      borde_elegido.active = false;
+      return;
+
+    }
+
+    if((borde_elegido == bordes_invisibles.getChildren()[3]) && borde_elegido.active){
+
+      torreta.getChildren()[1].activar_torreta = false;
       borde_elegido.active = false;
       return;
 
     }
 
   }
-
-
 
 }
 

@@ -43,6 +43,7 @@ class Menu_Principal extends Phaser.Scene {
     this.load.image('torreta', 'assets/images/torreta.png');
     this.load.image('base_torreta', 'assets/images/base_torreta.png');
     this.load.image('bala_enemiga', 'assets/images/bala_enemiga.png');
+    this.load.image('item_3', 'assets/images/item_3.png');
 
     //  se cargan las imágenes del tilemap del nivel 2
     this.load.image('bordes_nivel_2', 'assets/images/bordes_nivel_2.png');
@@ -83,72 +84,8 @@ class Menu_Principal extends Phaser.Scene {
     this.load.audio('muerte_personaje', 'assets/audio/muerte_personaje.mp3');
     this.load.audio('juntar_moneda', 'assets/audio/juntar_moneda.mp3');
     this.load.audio('juntar_cronometro', 'assets/audio/juntar_cronometro.mp3');
-
-    // var progressBar = this.add.graphics();
-    // var progressBox = this.add.graphics();
-    // progressBox.fillStyle(0x222222, 0.8);
-    // progressBox.fillRect(90, 270, 320, 50);
-    
-    // var width = this.cameras.main.width;
-    // var height = this.cameras.main.height;
-    // var loadingText = this.make.text({
-    //   x: width / 2,
-    //   y: height / 2 - 50,
-    //   text: 'Loading...',
-    //   style: {
-    //     font: '20px monospace',
-    //     fill: '#ffffff'
-    //   }
-    // });
-    // loadingText.setOrigin(0.5, 0.5);
-    
-    // var percentText = this.make.text({
-    //   x: width / 2,
-    //   y: height / 2 - 5,
-    //   text: '0%',
-    //   style: {
-    //     font: '18px monospace',
-    //     fill: '#ffffff'
-    //   }
-    // });
-    // percentText.setOrigin(0.5, 0.5);
-    
-    // var assetText = this.make.text({
-    //   x: width / 2,
-    //   y: height / 2 + 50,
-    //   text: '',
-    //   style: {
-    //     font: '18px monospace',
-    //     fill: '#ffffff'
-    //   }
-    // });
-
-    // assetText.setOrigin(0.5, 0.5);
-    
-    // this.load.on('progress', function (value) {
-    //   percentText.setText(parseInt(value * 100) + '%');
-    //   progressBar.clear();
-    //   progressBar.fillStyle(0xffffff, 1);
-    //   progressBar.fillRect(100, 280, 300 * value, 30);
-    // });
-    
-    // this.load.on('fileprogress', function (file) {
-    //   assetText.setText('Loading asset: ' + file.key);
-    // });
-
-    // this.load.on('complete', function () {
-    //   progressBar.destroy();
-    //   progressBox.destroy();
-    //   loadingText.destroy();
-    //   percentText.destroy();
-    //   assetText.destroy();
-    // });
-
-    // for (var i = 0; i < 200; i++) {
-
-    //   this.load.image('tile_montania' + i, 'assets/images/tile_montania.png');
-
-    // }
+    this.load.audio('interactuar_mouse', 'assets/audio/interactuar_mouse.mp3');
+    this.load.audio('juntar_vida', 'assets/audio/juntar_vida.mp3');
 
   }
 
@@ -185,6 +122,8 @@ class Menu_Principal extends Phaser.Scene {
       musica = this.sound.add('musica_menu_principal', {volume: 0.2, loop: true});
 
     }
+
+    sonido_interactuar_mouse = this.sound.add('interactuar_mouse', {volume: 0.5});
     //  los botones de jugar y créditos se hacen interactivos
     //  hacen diferentes cosas dependiendo si se pasa el mouse por encima o se lo quita, y también cuando se les hace click se abren las escenas correspondientes
     jugar.setInteractive();
@@ -200,6 +139,7 @@ class Menu_Principal extends Phaser.Scene {
       if(!imagen_inicio.visible){
 
         musica.stop();
+        sonido_interactuar_mouse.play();
         this.scene.start('nivel_2');
 
       }
@@ -214,6 +154,7 @@ class Menu_Principal extends Phaser.Scene {
     creditos.on('pointerdown', () => {
       if(!imagen_inicio.visible){
 
+        sonido_interactuar_mouse.play();
         this.scene.start('creditos');
 
       }

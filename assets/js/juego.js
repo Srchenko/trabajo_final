@@ -38,6 +38,7 @@ var items;
 var torreta;
 var torreta_disparo_izquierda;
 var activar_torreta;
+var max_ang;
 
 var animacion_jugador_suelo;
 var animacion_jugador_aire;
@@ -74,6 +75,8 @@ var sonido_plataforma_rompible_destruida;
 var sonido_muerte_personaje;
 var sonido_juntar_moneda;
 var sonido_juntar_cronometro;
+var sonido_interactuar_mouse;
+var sonido_juntar_vida;
 
 var imagen_inicio;
 var presiona_cualquier_tecla;

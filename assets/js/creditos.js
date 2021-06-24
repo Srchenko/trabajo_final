@@ -28,6 +28,7 @@ class Creditos extends Phaser.Scene {
       volver.setFill('#000');
     })
     volver.on('pointerdown', () => {
+      sonido_interactuar_mouse.play();
       this.scene.start('menu_principal');
     })
 
