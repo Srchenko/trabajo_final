@@ -435,6 +435,8 @@ class Nivel_2 extends Phaser.Scene {
 
 
     //crear plataformas
+
+
     for (let indice = 752; indice <= 880; indice+=64) {
       
       for (let index = 30; index <= 460; index+=64) {
@@ -445,12 +447,169 @@ class Nivel_2 extends Phaser.Scene {
         indice_plataforma++;
     }
     }
+
     
+        plataformas_rompibles.create(24, 2000, 'tile_superficie_rompible_base_' + Phaser.Math.Between(1,4)).setOrigin(0);
+        plataforma_rompible_hijo = plataformas_rompibles.getChildren()[indice_plataforma];
+        plataforma_rompible_hijo.body.immovable = true;
+        plataforma_rompible_hijo.body.moves = false;
+    
+        plataformas_rompibles.create(24, 2064, 'tile_superficie_rompible_base_' + Phaser.Math.Between(1,4)).setOrigin(0);
+        plataforma_rompible_hijo = plataformas_rompibles.getChildren()[indice_plataforma+1];
+        plataforma_rompible_hijo.body.immovable = true;
+        plataforma_rompible_hijo.body.moves = false;
 
+        plataformas_rompibles.create(24, 2128, 'tile_superficie_rompible_base_' + Phaser.Math.Between(1,4)).setOrigin(0);
+        plataforma_rompible_hijo = plataformas_rompibles.getChildren()[indice_plataforma+2];
+        plataforma_rompible_hijo.body.immovable = true;
+        plataforma_rompible_hijo.body.moves = false;
 
-   
+        indice_plataforma+=3;
 
+        
+       
+    for (let indice = 2456; indice <= 2520; indice+=64) {
+      
+      for (let index = 30; index <= 460; index+=64) {
+        plataformas_rompibles.create(index, indice, 'tile_superficie_rompible_base_' + Phaser.Math.Between(1,4)).setOrigin(0);
+        plataforma_rompible_hijo = plataformas_rompibles.getChildren()[indice_plataforma];
+        plataforma_rompible_hijo.body.immovable = true;
+        plataforma_rompible_hijo.body.moves = false;
+        indice_plataforma++;
+    }
+    } 
+
+    for (let indice = 3400; indice <= 3464; indice+=64) {
+      
+      for (let index = 30; index <= 460; index+=64) {
+        plataformas_rompibles.create(index, indice, 'tile_superficie_rompible_base_' + Phaser.Math.Between(1,4)).setOrigin(0);
+        plataforma_rompible_hijo = plataformas_rompibles.getChildren()[indice_plataforma];
+        plataforma_rompible_hijo.body.immovable = true;
+        plataforma_rompible_hijo.body.moves = false;
+        indice_plataforma++;
+    }
+    } 
+
+    for (let indice = 4616; indice <= 4744; indice+=64) {
+      
+      for (let index = 30; index <= 460; index+=64) {
+        plataformas_rompibles.create(index, indice, 'tile_superficie_rompible_base_' + Phaser.Math.Between(1,4)).setOrigin(0);
+        plataforma_rompible_hijo = plataformas_rompibles.getChildren()[indice_plataforma];
+        plataforma_rompible_hijo.body.immovable = true;
+        plataforma_rompible_hijo.body.moves = false;
+        indice_plataforma++;
+    }
+    } 
+
+    for (let indice = 6048; indice <= 6112; indice+=64) {
+      
+      for (let index = 30; index <= 460; index+=64) {
+        plataformas_rompibles.create(index, indice, 'tile_superficie_rompible_base_' + Phaser.Math.Between(1,4)).setOrigin(0);
+        plataforma_rompible_hijo = plataformas_rompibles.getChildren()[indice_plataforma];
+        plataforma_rompible_hijo.body.immovable = true;
+        plataforma_rompible_hijo.body.moves = false;
+        indice_plataforma++;
+    }
+    } 
+
+    for (let indice = 7336; indice <= 7400; indice+=64) {
+      
+      for (let index = 30; index <= 460; index+=64) {
+        plataformas_rompibles.create(index, indice, 'tile_superficie_rompible_base_' + Phaser.Math.Between(1,4)).setOrigin(0);
+        plataforma_rompible_hijo = plataformas_rompibles.getChildren()[indice_plataforma];
+        plataforma_rompible_hijo.body.immovable = true;
+        plataforma_rompible_hijo.body.moves = false;
+        indice_plataforma++;
+    }
+    } 
+
+    plataformas_rompibles.create(184, 3088, 'tile_superficie_rompible_base_' + Phaser.Math.Between(1,4)).setOrigin(0);
+    plataforma_rompible_hijo = plataformas_rompibles.getChildren()[indice_plataforma];
+    plataforma_rompible_hijo.body.immovable = true;
+    plataforma_rompible_hijo.body.moves = false;
+    indice_plataforma+=1;
+
+    plataformas_rompibles.create(184, 3152, 'tile_superficie_rompible_base_' + Phaser.Math.Between(1,4)).setOrigin(0);
+    plataforma_rompible_hijo = plataformas_rompibles.getChildren()[indice_plataforma];
+    plataforma_rompible_hijo.body.immovable = true;
+    plataforma_rompible_hijo.body.moves = false;
+    indice_plataforma+=1;
+
+    plataformas_rompibles.create(392, 3760, 'tile_superficie_rompible_base_' + Phaser.Math.Between(1,4)).setOrigin(0);
+    plataforma_rompible_hijo = plataformas_rompibles.getChildren()[indice_plataforma];
+    plataforma_rompible_hijo.body.immovable = true;
+    plataforma_rompible_hijo.body.moves = false;
+    indice_plataforma+=1;
+
+    plataformas_rompibles.create(208, 1360, 'tile_superficie_rompible_base_' + Phaser.Math.Between(1,4)).setOrigin(0);
+    plataforma_rompible_hijo = plataformas_rompibles.getChildren()[indice_plataforma];
+    plataforma_rompible_hijo.body.immovable = true;
+    plataforma_rompible_hijo.body.moves = false;
+    indice_plataforma+=1;
+
+    plataformas_rompibles.create(48, 2776, 'tile_superficie_rompible_base_' + Phaser.Math.Between(1,4)).setOrigin(0);
+    plataforma_rompible_hijo = plataformas_rompibles.getChildren()[indice_plataforma];
+    plataforma_rompible_hijo.body.immovable = true;
+    plataforma_rompible_hijo.body.moves = false;
+    indice_plataforma+=1;
+
+    plataformas_rompibles.create(400, 2776, 'tile_superficie_rompible_base_' + Phaser.Math.Between(1,4)).setOrigin(0);
+    plataforma_rompible_hijo = plataformas_rompibles.getChildren()[indice_plataforma];
+    plataforma_rompible_hijo.body.immovable = true;
+    plataforma_rompible_hijo.body.moves = false;
+    indice_plataforma+=1;
+
+    plataformas_rompibles.create(128, 2928, 'tile_superficie_rompible_base_' + Phaser.Math.Between(1,4)).setOrigin(0);
+    plataforma_rompible_hijo = plataformas_rompibles.getChildren()[indice_plataforma];
+    plataforma_rompible_hijo.body.immovable = true;
+    plataforma_rompible_hijo.body.moves = false;
+    indice_plataforma+=1;
+
+    plataformas_rompibles.create(288, 2928, 'tile_superficie_rompible_base_' + Phaser.Math.Between(1,4)).setOrigin(0);
+    plataforma_rompible_hijo = plataformas_rompibles.getChildren()[indice_plataforma];
+    plataforma_rompible_hijo.body.immovable = true;
+    plataforma_rompible_hijo.body.moves = false;
+    indice_plataforma+=1;
+
+    plataformas_rompibles.create(128, 8024, 'tile_superficie_rompible_base_' + Phaser.Math.Between(1,4)).setOrigin(0);
+    plataforma_rompible_hijo = plataformas_rompibles.getChildren()[indice_plataforma];
+    plataforma_rompible_hijo.body.immovable = true;
+    plataforma_rompible_hijo.body.moves = false;
+    indice_plataforma+=1;
+
+    plataformas_rompibles.create(424, 8024, 'tile_superficie_rompible_base_' + Phaser.Math.Between(1,4)).setOrigin(0);
+    plataforma_rompible_hijo = plataformas_rompibles.getChildren()[indice_plataforma];
+    plataforma_rompible_hijo.body.immovable = true;
+    plataforma_rompible_hijo.body.moves = false;
+    indice_plataforma+=1;
+
+    plataformas_rompibles.create(16, 8160, 'tile_superficie_rompible_base_' + Phaser.Math.Between(1,4)).setOrigin(0);
+    plataforma_rompible_hijo = plataformas_rompibles.getChildren()[indice_plataforma];
+    plataforma_rompible_hijo.body.immovable = true;
+    plataforma_rompible_hijo.body.moves = false;
+    indice_plataforma+=1;
+
+    plataformas_rompibles.create(272, 8160, 'tile_superficie_rompible_base_' + Phaser.Math.Between(1,4)).setOrigin(0);
+    plataforma_rompible_hijo = plataformas_rompibles.getChildren()[indice_plataforma];
+    plataforma_rompible_hijo.body.immovable = true;
+    plataforma_rompible_hijo.body.moves = false;
+    indice_plataforma+=1;
+
+    plataformas_rompibles.create(408, 10336, 'tile_superficie_rompible_base_' + Phaser.Math.Between(1,4)).setOrigin(0);
+    plataforma_rompible_hijo = plataformas_rompibles.getChildren()[indice_plataforma];
+    plataforma_rompible_hijo.body.immovable = true;
+    plataforma_rompible_hijo.body.moves = false;
+    indice_plataforma+=1;
+
+    plataformas_rompibles.create(216, 10472, 'tile_superficie_rompible_base_' + Phaser.Math.Between(1,4)).setOrigin(0);
+    plataforma_rompible_hijo = plataformas_rompibles.getChildren()[indice_plataforma];
+    plataforma_rompible_hijo.body.immovable = true;
+    plataforma_rompible_hijo.body.moves = false;
+    indice_plataforma+=1;
+
+      
   }
+  
 
   crearZonasInvisiblesParaJugador(){
 
