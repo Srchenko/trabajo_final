@@ -700,25 +700,34 @@ class Nivel_2 extends Phaser.Scene {
 
     items = this.physics.add.group();
 
-    //  el primer item que aparecerá en el nivel siempre será una moneda
-    items.create(40, 1981, 'item_1');
+    //  Creo monedas no aleatorias
+    items.create(192, 368, 'item_1');
+    items.create(416, 1688, 'item_1');
+    items.create(416, 1752, 'item_1');
+    items.create(416, 1816, 'item_1');
+    items.create(440, 2296, 'item_1');
+    items.create(440, 2360, 'item_1');
+    items.create(440, 2424, 'item_1');
+    items.create(360, 3056, 'item_1');
+    items.create(400, 3056, 'item_1');
+    items.create(440, 3056, 'item_1');
+    items.create(40, 3728, 'item_1');
+    items.create(80, 3728, 'item_1');
+    items.create(120, 3728, 'item_1');
+    items.create(160, 3728, 'item_1');
+    items.create(200, 3728, 'item_1');
 
+    
     //  en casi todas las demás posiciones aparecerá un item aleatorio entre dos, habrá un 50% de probabilidades de que salga una moneda o un cronómetro
-    items.create(252, 2461, this.itemAleatorio());
-    items.create(454, 2941, this.itemAleatorio());
-    items.create(40, 3501, this.itemAleatorio());
-    items.create(425, 4221, this.itemAleatorio());
-    items.create(252, 4701, this.itemAleatorio());
-    items.create(454, 5581, this.itemAleatorio());
-    items.create(100, 6061, this.itemAleatorio());
-    items.create(40, 6965, this.itemAleatorio());
-    items.create(40, 7661, this.itemAleatorio());
-    items.create(252, 8075, this.itemAleatorio());
-    items.create(375, 8300, this.itemAleatorio());
-    items.create(90, 8700, this.itemAleatorio());
-    items.create(252, 9101, this.itemAleatorio());
-    items.create(40, 9901, 'item_1');
-    items.create(40, 10300, 'item_1');
+    items.create(208, 600, this.itemAleatorio());
+    items.create(112, 1232, this.itemAleatorio());
+    items.create(360, 1232, this.itemAleatorio());
+    items.create(400, 1488, this.itemAleatorio());
+    items.create(248, 2744, this.itemAleatorio());
+    items.create(72, 2880, this.itemAleatorio());
+    items.create(424, 2880, this.itemAleatorio());
+    
+   
 
     //  se les da atributos a todos los items
     for (let indice = 0; indice < 16; indice++) {
