@@ -51,12 +51,26 @@ class Nivel_2 extends Phaser.Scene {
     torreta.create(20, 500, 'torreta').setOrigin(0);
     torreta.getChildren()[0].setRotation(-0.2);
     torreta.getChildren()[0].max_ang = -0.2;
+    torreta.getChildren()[0].cuadrante = 1;
 
     base_torreta = this.add.image(200, 1660, 'base_torreta').setOrigin(0);
     base_torreta.angle = 90;
     torreta.create(175, 1670, 'torreta').setOrigin(0);
     torreta.getChildren()[1].setRotation(0);
     torreta.getChildren()[1].max_ang = 0;
+    torreta.getChildren()[1].cuadrante = 1;
+
+    base_torreta = this.add.image(0, 3850, 'base_torreta').setOrigin(0);
+    torreta.create(20, 3875, 'torreta').setOrigin(0);
+    torreta.getChildren()[2].setRotation(0);
+    torreta.getChildren()[2].max_ang = 0;
+    torreta.getChildren()[2].cuadrante = 1;
+
+    base_torreta = this.add.image(472, 4000, 'base_torreta').setOrigin(0);
+    torreta.create(484, 4035, 'torreta').setOrigin(0);
+    torreta.getChildren()[3].setRotation(3.14);
+    torreta.getChildren()[3].max_ang = 3.14;
+    torreta.getChildren()[3].cuadrante = 2;
 
     for (let indice = 0; indice < torreta.getLength(); indice++) {
 
@@ -418,10 +432,19 @@ class Nivel_2 extends Phaser.Scene {
         let pos_tor_y = hijo.y;
         
         let angulo = Phaser.Math.Angle.Between(pos_tor_x, pos_tor_y, pos_jug_x, pos_jug_y);
-        if(angulo < hijo.max_ang){
+        if(hijo.cuadrante == 1 && angulo < hijo.max_ang){
   
           angulo = hijo.max_ang;
   
+        }
+        else{
+
+          if(hijo.cuadrante == 2 && (angulo >= (Math.PI * -1) && angulo <= 0)){
+  
+            angulo = hijo.max_ang;
+    
+          }
+
         }
         hijo.setRotation(angulo);
   
@@ -434,7 +457,7 @@ class Nivel_2 extends Phaser.Scene {
           {
             balita_enemiga.disparo(hijo);
             sonido_disparo_torreta.play();
-            hijo.cadencia_de_fuego = time + 1500;
+            hijo.cadencia_de_fuego = time + Phaser.Math.Between(750,1500);
   
           }
   
@@ -637,12 +660,17 @@ class Nivel_2 extends Phaser.Scene {
     bordes_invisibles.create(252, 950, 'pared_invisible_horizontal');
     bordes_invisibles.create(252, 1666, 'pared_invisible_horizontal');
     bordes_invisibles.create(252, 2200, 'pared_invisible_horizontal');
+    bordes_invisibles.create(252, 3830, 'pared_invisible_horizontal');
+    bordes_invisibles.create(252, 4250, 'pared_invisible_horizontal');
+    bordes_invisibles.create(252, 4003, 'pared_invisible_horizontal');
+    bordes_invisibles.create(252, 4365, 'pared_invisible_horizontal');
 
   }
 
   crearJugador(){
 
-    jugador = this.physics.add.sprite(225, 100, 'jugador_movimiento');
+    jugador = this.physics.add.sprite(225, 3725, 'jugador_movimiento');
+    //jugador = this.physics.add.sprite(225, 100, 'jugador_movimiento');
     jugador.setSize(18, 48, true);
     jugador.vida = 3;
     animacion_jugador_suelo = 'derecha_suelo';
@@ -1043,25 +1071,38 @@ class Nivel_2 extends Phaser.Scene {
 
     }
 
+    if((borde_elegido == bordes_invisibles.getChildren()[4]) && borde_elegido.active){
+
+      torreta.getChildren()[2].activar_torreta = true;
+      borde_elegido.active = false;
+      return;
+
+    }
+
+    if((borde_elegido == bordes_invisibles.getChildren()[5]) && borde_elegido.active){
+
+      torreta.getChildren()[2].activar_torreta = false;
+      borde_elegido.active = false;
+      return;
+
+    }
+
+    if((borde_elegido == bordes_invisibles.getChildren()[6]) && borde_elegido.active){
+
+      torreta.getChildren()[3].activar_torreta = true;
+      borde_elegido.active = false;
+      return;
+
+    }
+
+    if((borde_elegido == bordes_invisibles.getChildren()[7]) && borde_elegido.active){
+
+      torreta.getChildren()[3].activar_torreta = false;
+      borde_elegido.active = false;
+      return;
+
+    }
+
   }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

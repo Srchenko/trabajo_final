@@ -39,6 +39,7 @@ var torreta;
 var torreta_disparo_izquierda;
 var activar_torreta;
 var max_ang;
+var cuadrante;
 
 var animacion_jugador_suelo;
 var animacion_jugador_aire;
