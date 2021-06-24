@@ -737,6 +737,11 @@ class Nivel_2 extends Phaser.Scene {
     items.create(120, 3728, 'item_1');
     items.create(160, 3728, 'item_1');
     items.create(200, 3728, 'item_1');
+    items.create(96, 4992, 'item_1');
+    items.create(96, 5048, 'item_1');
+    items.create(208, 5176, 'item_1');
+    items.create(272, 5176, 'item_1');
+    items.create(336, 5176, 'item_1');
 
     
     //  en casi todas las demás posiciones aparecerá un item aleatorio entre dos, habrá un 50% de probabilidades de que salga una moneda o un cronómetro
@@ -747,6 +752,11 @@ class Nivel_2 extends Phaser.Scene {
     items.create(248, 2744, this.itemAleatorio());
     items.create(72, 2880, this.itemAleatorio());
     items.create(424, 2880, this.itemAleatorio());
+    items.create(392, 3928, this.itemAleatorio());
+    items.create(392, 4160, this.itemAleatorio());
+    items.create(392, 4408, this.itemAleatorio());
+    items.create(104, 4048, this.itemAleatorio());
+    items.create(104, 4288, this.itemAleatorio());
     
    
 
