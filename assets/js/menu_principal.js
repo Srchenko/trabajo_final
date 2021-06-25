@@ -26,6 +26,7 @@ class Menu_Principal extends Phaser.Scene {
     this.load.image('item_2', 'assets/images/item_2.png');
     this.load.image('fondo_hud', 'assets/images/fondo_hud.png');
     this.load.image('pared_invisible_horizontal', 'assets/images/pared_invisible_horizontal.png');
+    
 
     //  se cargan las imágenes del tilemap del nivel 1
     this.load.image('tile_montania', 'assets/images/tile_montania.png');
@@ -44,6 +45,7 @@ class Menu_Principal extends Phaser.Scene {
     this.load.image('base_torreta', 'assets/images/base_torreta.png');
     this.load.image('bala_enemiga', 'assets/images/bala_enemiga.png');
     this.load.image('item_3', 'assets/images/item_3.png');
+    this.load.image('pared_invisible_vertical', 'assets/images/pared_invisible_vertical.png');
 
     //  se cargan las imágenes del tilemap del nivel 2
     this.load.image('bordes_nivel_2', 'assets/images/bordes_nivel_2.png');
@@ -53,6 +55,7 @@ class Menu_Principal extends Phaser.Scene {
     this.load.image('tile_superficie_rompible_base_4', 'assets/images/tile_superficie_rompible_base_4.png');
     this.load.image('tile_suelo_base', 'assets/images/tile_suelo_base.png');
     this.load.image('tile_superficie_suelo_base', 'assets/images/tile_superficie_suelo_base.png');
+    this.load.image('robot_prueba', 'assets/images/robot_prueba.png');
 
     //  se cargan las imágenes del fin de juego
     this.load.image('fin_juego', 'assets/images/fin_juego.png');

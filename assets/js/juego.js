@@ -23,6 +23,7 @@ var cursores;
 
 var camara;
 var bordes_invisibles;
+var bordes_invisibles_enemigo;
 var plataformas_rompibles;
 var plataformas_no_rompibles;
 
@@ -34,6 +35,7 @@ var Bala;
 var Bala_torreta;
 
 var dron;
+var robot;
 var items;
 var torreta;
 var torreta_disparo_izquierda;

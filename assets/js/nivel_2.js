@@ -44,6 +44,9 @@ class Nivel_2 extends Phaser.Scene {
     //  se crea al jugador con algunas propiedades
     this.crearJugador();
 
+    //se crean los robot
+    this.crearRobot();
+
     torreta = this.physics.add.group();
     let base_torreta;
 
@@ -489,27 +492,7 @@ class Nivel_2 extends Phaser.Scene {
         indice_plataforma++;
     }
     }
-
-    
-        plataformas_rompibles.create(24, 2000, 'tile_superficie_rompible_base_' + Phaser.Math.Between(1,4)).setOrigin(0);
-        plataforma_rompible_hijo = plataformas_rompibles.getChildren()[indice_plataforma];
-        plataforma_rompible_hijo.body.immovable = true;
-        plataforma_rompible_hijo.body.moves = false;
-    
-        plataformas_rompibles.create(24, 2064, 'tile_superficie_rompible_base_' + Phaser.Math.Between(1,4)).setOrigin(0);
-        plataforma_rompible_hijo = plataformas_rompibles.getChildren()[indice_plataforma+1];
-        plataforma_rompible_hijo.body.immovable = true;
-        plataforma_rompible_hijo.body.moves = false;
-
-        plataformas_rompibles.create(24, 2128, 'tile_superficie_rompible_base_' + Phaser.Math.Between(1,4)).setOrigin(0);
-        plataforma_rompible_hijo = plataformas_rompibles.getChildren()[indice_plataforma+2];
-        plataforma_rompible_hijo.body.immovable = true;
-        plataforma_rompible_hijo.body.moves = false;
-
-        indice_plataforma+=3;
-
-        
-       
+   
     for (let indice = 2456; indice <= 2520; indice+=64) {
       
       for (let index = 30; index <= 460; index+=64) {
@@ -566,91 +549,30 @@ class Nivel_2 extends Phaser.Scene {
     } 
 
     plataformas_rompibles.create(184, 3088, 'tile_superficie_rompible_base_' + Phaser.Math.Between(1,4)).setOrigin(0);
-    plataforma_rompible_hijo = plataformas_rompibles.getChildren()[indice_plataforma];
-    plataforma_rompible_hijo.body.immovable = true;
-    plataforma_rompible_hijo.body.moves = false;
-    indice_plataforma+=1;
-
     plataformas_rompibles.create(184, 3152, 'tile_superficie_rompible_base_' + Phaser.Math.Between(1,4)).setOrigin(0);
-    plataforma_rompible_hijo = plataformas_rompibles.getChildren()[indice_plataforma];
-    plataforma_rompible_hijo.body.immovable = true;
-    plataforma_rompible_hijo.body.moves = false;
-    indice_plataforma+=1;
-
     plataformas_rompibles.create(392, 3760, 'tile_superficie_rompible_base_' + Phaser.Math.Between(1,4)).setOrigin(0);
-    plataforma_rompible_hijo = plataformas_rompibles.getChildren()[indice_plataforma];
-    plataforma_rompible_hijo.body.immovable = true;
-    plataforma_rompible_hijo.body.moves = false;
-    indice_plataforma+=1;
-
     plataformas_rompibles.create(208, 1360, 'tile_superficie_rompible_base_' + Phaser.Math.Between(1,4)).setOrigin(0);
-    plataforma_rompible_hijo = plataformas_rompibles.getChildren()[indice_plataforma];
-    plataforma_rompible_hijo.body.immovable = true;
-    plataforma_rompible_hijo.body.moves = false;
-    indice_plataforma+=1;
-
     plataformas_rompibles.create(48, 2776, 'tile_superficie_rompible_base_' + Phaser.Math.Between(1,4)).setOrigin(0);
-    plataforma_rompible_hijo = plataformas_rompibles.getChildren()[indice_plataforma];
-    plataforma_rompible_hijo.body.immovable = true;
-    plataforma_rompible_hijo.body.moves = false;
-    indice_plataforma+=1;
-
     plataformas_rompibles.create(400, 2776, 'tile_superficie_rompible_base_' + Phaser.Math.Between(1,4)).setOrigin(0);
-    plataforma_rompible_hijo = plataformas_rompibles.getChildren()[indice_plataforma];
-    plataforma_rompible_hijo.body.immovable = true;
-    plataforma_rompible_hijo.body.moves = false;
-    indice_plataforma+=1;
-
     plataformas_rompibles.create(128, 2928, 'tile_superficie_rompible_base_' + Phaser.Math.Between(1,4)).setOrigin(0);
-    plataforma_rompible_hijo = plataformas_rompibles.getChildren()[indice_plataforma];
-    plataforma_rompible_hijo.body.immovable = true;
-    plataforma_rompible_hijo.body.moves = false;
-    indice_plataforma+=1;
-
     plataformas_rompibles.create(288, 2928, 'tile_superficie_rompible_base_' + Phaser.Math.Between(1,4)).setOrigin(0);
-    plataforma_rompible_hijo = plataformas_rompibles.getChildren()[indice_plataforma];
-    plataforma_rompible_hijo.body.immovable = true;
-    plataforma_rompible_hijo.body.moves = false;
-    indice_plataforma+=1;
-
     plataformas_rompibles.create(128, 8024, 'tile_superficie_rompible_base_' + Phaser.Math.Between(1,4)).setOrigin(0);
-    plataforma_rompible_hijo = plataformas_rompibles.getChildren()[indice_plataforma];
-    plataforma_rompible_hijo.body.immovable = true;
-    plataforma_rompible_hijo.body.moves = false;
-    indice_plataforma+=1;
-
     plataformas_rompibles.create(424, 8024, 'tile_superficie_rompible_base_' + Phaser.Math.Between(1,4)).setOrigin(0);
-    plataforma_rompible_hijo = plataformas_rompibles.getChildren()[indice_plataforma];
-    plataforma_rompible_hijo.body.immovable = true;
-    plataforma_rompible_hijo.body.moves = false;
-    indice_plataforma+=1;
-
     plataformas_rompibles.create(16, 8160, 'tile_superficie_rompible_base_' + Phaser.Math.Between(1,4)).setOrigin(0);
-    plataforma_rompible_hijo = plataformas_rompibles.getChildren()[indice_plataforma];
-    plataforma_rompible_hijo.body.immovable = true;
-    plataforma_rompible_hijo.body.moves = false;
-    indice_plataforma+=1;
-
     plataformas_rompibles.create(272, 8160, 'tile_superficie_rompible_base_' + Phaser.Math.Between(1,4)).setOrigin(0);
-    plataforma_rompible_hijo = plataformas_rompibles.getChildren()[indice_plataforma];
-    plataforma_rompible_hijo.body.immovable = true;
-    plataforma_rompible_hijo.body.moves = false;
-    indice_plataforma+=1;
-
     plataformas_rompibles.create(408, 10336, 'tile_superficie_rompible_base_' + Phaser.Math.Between(1,4)).setOrigin(0);
-    plataforma_rompible_hijo = plataformas_rompibles.getChildren()[indice_plataforma];
-    plataforma_rompible_hijo.body.immovable = true;
-    plataforma_rompible_hijo.body.moves = false;
-    indice_plataforma+=1;
-
     plataformas_rompibles.create(216, 10472, 'tile_superficie_rompible_base_' + Phaser.Math.Between(1,4)).setOrigin(0);
-    plataforma_rompible_hijo = plataformas_rompibles.getChildren()[indice_plataforma];
-    plataforma_rompible_hijo.body.immovable = true;
-    plataforma_rompible_hijo.body.moves = false;
-    indice_plataforma+=1;
+    plataformas_rompibles.create(24, 2000, 'tile_superficie_rompible_base_' + Phaser.Math.Between(1,4)).setOrigin(0);
+    plataformas_rompibles.create(24, 2064, 'tile_superficie_rompible_base_' + Phaser.Math.Between(1,4)).setOrigin(0);
+    plataformas_rompibles.create(24, 2128, 'tile_superficie_rompible_base_' + Phaser.Math.Between(1,4)).setOrigin(0);    
 
+    for (let index = 98; index < plataformas_rompibles.getLength(); index++) {
+      plataforma_rompible_hijo = plataformas_rompibles.getChildren()[index];
+      plataforma_rompible_hijo.body.immovable = true;
+      plataforma_rompible_hijo.body.moves = false;
       
-  }
+    }
+    }
   
 
   crearZonasInvisiblesParaJugador(){
@@ -665,12 +587,43 @@ class Nivel_2 extends Phaser.Scene {
     bordes_invisibles.create(252, 4003, 'pared_invisible_horizontal');
     bordes_invisibles.create(252, 4365, 'pared_invisible_horizontal');
 
+    bordes_invisibles_enemigo = this.physics.add.staticGroup();
+    bordes_invisibles_enemigo.create(152, 1024, 'pared_invisible_vertical');
+    bordes_invisibles_enemigo.create(320, 1024, 'pared_invisible_vertical');
+    bordes_invisibles_enemigo.create(168, 1624, 'pared_invisible_vertical');
+    bordes_invisibles_enemigo.create(18, 1624, 'pared_invisible_vertical');
+    bordes_invisibles_enemigo.create(88, 1992, 'pared_invisible_vertical');
+    bordes_invisibles_enemigo.create(480, 1992, 'pared_invisible_vertical');
+    bordes_invisibles_enemigo.create(392, 2768, 'pared_invisible_vertical');
+    bordes_invisibles_enemigo.create(112, 2768, 'pared_invisible_vertical');
+    bordes_invisibles_enemigo.create(18, 3752, 'pared_invisible_vertical');
+    bordes_invisibles_enemigo.create(384, 3752, 'pared_invisible_vertical');
+    bordes_invisibles_enemigo.create(176, 4312, 'pared_invisible_vertical');
+    bordes_invisibles_enemigo.create(18, 4312, 'pared_invisible_vertical');
+    bordes_invisibles_enemigo.create(144, 4936, 'pared_invisible_vertical');
+    bordes_invisibles_enemigo.create(480, 4936, 'pared_invisible_vertical');
+    bordes_invisibles_enemigo.create(280, 5648, 'pared_invisible_vertical');
+    bordes_invisibles_enemigo.create(18, 5648, 'pared_invisible_vertical');
+    bordes_invisibles_enemigo.create(272, 6672, 'pared_invisible_vertical');
+    bordes_invisibles_enemigo.create(80, 6672, 'pared_invisible_vertical');
+    bordes_invisibles_enemigo.create(18, 7056, 'pared_invisible_vertical');
+    bordes_invisibles_enemigo.create(160, 7056, 'pared_invisible_vertical');
+    bordes_invisibles_enemigo.create(312, 8424, 'pared_invisible_vertical');
+    bordes_invisibles_enemigo.create(18, 8424, 'pared_invisible_vertical');
+    bordes_invisibles_enemigo.create(176, 8880, 'pared_invisible_vertical');
+    bordes_invisibles_enemigo.create(18, 8880, 'pared_invisible_vertical');
+    bordes_invisibles_enemigo.create(400, 9400, 'pared_invisible_vertical');
+    bordes_invisibles_enemigo.create(18, 9400, 'pared_invisible_vertical');
+    bordes_invisibles_enemigo.create(400, 10328, 'pared_invisible_vertical');
+    bordes_invisibles_enemigo.create(18, 10328, 'pared_invisible_vertical');
+
+    
   }
 
   crearJugador(){
 
-    jugador = this.physics.add.sprite(225, 3725, 'jugador_movimiento');
-    //jugador = this.physics.add.sprite(225, 100, 'jugador_movimiento');
+    //jugador = this.physics.add.sprite(225, 3725, 'jugador_movimiento');
+    jugador = this.physics.add.sprite(225, 100, 'jugador_movimiento');
     jugador.setSize(18, 48, true);
     jugador.vida = 3;
     animacion_jugador_suelo = 'derecha_suelo';
@@ -679,69 +632,68 @@ class Nivel_2 extends Phaser.Scene {
 
   }
 
-  crearDrones(){
+  crearRobot(){
 
-    dron = this.physics.add.group();
-    dron.create(445, 950, 'dron_animacion');
-    dron.create(252, 2825, 'dron_animacion');
-    dron.create(50, 4825, 'dron_animacion');
-    dron.create(454, 4825, 'dron_animacion');
-    dron.create(50, 9225, 'dron_animacion');
-    dron.create(454, 9225, 'dron_animacion');
-    dron.create(252, 9775, 'dron_animacion');
+    robot = this.physics.add.group();
+
+    robot.create(232, 1030, 'robot_prueba').setOrigin(0.5,1);
+    robot.create(72, 1630, 'robot_prueba').setOrigin(0.5,1);
+    robot.create(280, 1998, 'robot_prueba').setOrigin(0.5,1);
+    robot.create(240, 2774, 'robot_prueba').setOrigin(0.5,1);
+    robot.create(192, 3758, 'robot_prueba').setOrigin(0.5,1);
+    robot.create(88, 4318, 'robot_prueba').setOrigin(0.5,1);
+    robot.create(296, 4942, 'robot_prueba').setOrigin(0.5,1);
+    robot.create(136, 5654, 'robot_prueba').setOrigin(0.5,1);
+    robot.create(160, 6676, 'robot_prueba').setOrigin(0.5,1);
+    robot.create(100, 7062, 'robot_prueba').setOrigin(0.5,1);
+    robot.create(144, 8430, 'robot_prueba').setOrigin(0.5,1);
+    robot.create(88, 8886, 'robot_prueba').setOrigin(0.5,1);
+    robot.create(200, 9406, 'robot_prueba').setOrigin(0.5,1);
+    robot.create(216, 10334, 'robot_prueba').setOrigin(0.5,1);
+
     
-    dron.create(252, 2700, 'dron_animacion');
-    dron.create(100, 2450, 'dron_animacion');
-    dron.create(60, 3750, 'dron_animacion');
-    dron.create(100, 4375, 'dron_animacion');
-    dron.create(100, 7000, 'dron_animacion');
-    dron.create(404, 7000, 'dron_animacion');
-    dron.create(100, 8300, 'dron_animacion');
-    dron.create(252, 8600, 'dron_animacion');
-    dron.create(252, 9000, 'dron_animacion');
-    dron.create(252, 9890, 'dron_animacion');
-    dron.create(454, 10000, 'dron_animacion');
 
     //  estos serán los drones que no se mueven
-    for (let indice = 0; indice < 7; indice++) {
+     for (let indice = 0; indice < robot.getLength(); indice++) {
 
-      dron.getChildren()[indice].body.immovable = true;
-      dron.getChildren()[indice].body.moves = false;
-      dron.getChildren()[indice].vida = 2;
-      dron.getChildren()[indice].anims.play('dron_movimiento', true);
-      dron.getChildren()[indice].setCollideWorldBounds(false);
-      dron.getChildren()[indice].puntos = 20;
+       robot.getChildren()[indice].body.immovable = true;
+       robot.getChildren()[indice].body.moves = false;
+       robot.getChildren()[indice].setScale(0.4);
+    //   dron.getChildren()[indice].vida = 1;
+    //   dron.getChildren()[indice].anims.play('dron_movimiento', true);
+       robot.getChildren()[indice].setCollideWorldBounds(false);
+    //   dron.getChildren()[indice].puntos = 20;
 
-    }
+     }
 
     //  estos serán los drones que se mueven
-    for (let indice = 7; indice < 18; indice++) {
+    // for (let indice = 7; indice < 18; indice++) {
 
-      dron.getChildren()[indice].vida = 2;
-      dron.getChildren()[indice].anims.play('dron_movimiento', true);
-      dron.getChildren()[indice].body.setAllowGravity(false);
-      dron.getChildren()[indice].body.setBounce(1);
-      dron.getChildren()[indice].setCollideWorldBounds(false);
-      dron.getChildren()[indice].puntos = 20;
+    //   dron.getChildren()[indice].vida = 2;
+    //   dron.getChildren()[indice].anims.play('dron_movimiento', true);
+    //   dron.getChildren()[indice].body.setAllowGravity(false);
+    //   dron.getChildren()[indice].body.setBounce(1);
+    //   dron.getChildren()[indice].setCollideWorldBounds(false);
+    //   dron.getChildren()[indice].puntos = 20;
 
-    }
+    // }
 
-    //  atributos adicionales para los drones que se mueven
-    dron.getChildren()[7].setVelocity(-150, -150);
-    dron.getChildren()[8].body.immovable = true;
-    dron.getChildren()[8].setVelocity(-150, 0);
-    dron.getChildren()[9].body.immovable = true;
-    dron.getChildren()[9].setVelocity(0, -150);
-    dron.getChildren()[10].setVelocity(-150, -150);
-    dron.getChildren()[11].setVelocity(-150, -150);
-    dron.getChildren()[12].setVelocity(150, -150);
-    dron.getChildren()[13].setVelocity(-150, -150);
-    dron.getChildren()[14].setVelocity(150, -150);
-    dron.getChildren()[15].setVelocity(-150, -150);
-    dron.getChildren()[16].body.immovable = true;
-    dron.getChildren()[16].setVelocity(-150, 0);
-    dron.getChildren()[17].body.immovable = true;
-    dron.getChildren()[17].setVelocity(0, -150);
+    // //  atributos adicionales para los drones que se mueven
+    // dron.getChildren()[7].setVelocity(-150, -150);
+    // dron.getChildren()[8].body.immovable = true;
+    // dron.getChildren()[8].setVelocity(-150, 0);
+    // dron.getChildren()[9].body.immovable = true;
+    // dron.getChildren()[9].setVelocity(0, -150);
+    // dron.getChildren()[10].setVelocity(-150, -150);
+    // dron.getChildren()[11].setVelocity(-150, -150);
+    // dron.getChildren()[12].setVelocity(150, -150);
+    // dron.getChildren()[13].setVelocity(-150, -150);
+    // dron.getChildren()[14].setVelocity(150, -150);
+    // dron.getChildren()[15].setVelocity(-150, -150);
+    // dron.getChildren()[16].body.immovable = true;
+    // dron.getChildren()[16].setVelocity(-150, 0);
+    // dron.getChildren()[17].body.immovable = true;
+    // dron.getChildren()[17].setVelocity(0, -150);
 
   }
 
@@ -749,42 +701,55 @@ class Nivel_2 extends Phaser.Scene {
 
     items = this.physics.add.group();
 
-    //  Creo monedas no aleatorias
-    items.create(192, 368, 'item_1');
-    items.create(416, 1688, 'item_1');
-    items.create(416, 1752, 'item_1');
-    items.create(416, 1816, 'item_1');
-    items.create(440, 2296, 'item_1');
-    items.create(440, 2360, 'item_1');
-    items.create(440, 2424, 'item_1');
-    items.create(360, 3056, 'item_1');
-    items.create(400, 3056, 'item_1');
-    items.create(440, 3056, 'item_1');
-    items.create(40, 3728, 'item_1');
-    items.create(80, 3728, 'item_1');
-    items.create(120, 3728, 'item_1');
-    items.create(160, 3728, 'item_1');
-    items.create(200, 3728, 'item_1');
-    items.create(96, 4992, 'item_1');
-    items.create(96, 5048, 'item_1');
-    items.create(208, 5176, 'item_1');
-    items.create(272, 5176, 'item_1');
-    items.create(336, 5176, 'item_1');
+    //  Aca voy a poner enemigos
+
 
     
     //  en casi todas las demás posiciones aparecerá un item aleatorio entre dos, habrá un 50% de probabilidades de que salga una moneda o un cronómetro
     items.create(208, 600, this.itemAleatorio());
-    items.create(112, 1232, this.itemAleatorio());
-    items.create(360, 1232, this.itemAleatorio());
+    items.create(112, 1176, this.itemAleatorio());
+    items.create(360, 1176, this.itemAleatorio());
     items.create(400, 1488, this.itemAleatorio());
     items.create(248, 2744, this.itemAleatorio());
     items.create(72, 2880, this.itemAleatorio());
     items.create(424, 2880, this.itemAleatorio());
     items.create(392, 3928, this.itemAleatorio());
-    items.create(392, 4160, this.itemAleatorio());
     items.create(392, 4408, this.itemAleatorio());
     items.create(104, 4048, this.itemAleatorio());
     items.create(104, 4288, this.itemAleatorio());
+    items.create(192, 368, this.itemAleatorio());
+    items.create(416, 1688, this.itemAleatorio());
+    items.create(416, 1816, this.itemAleatorio());
+    items.create(440, 2296, this.itemAleatorio());
+    items.create(440, 2424, this.itemAleatorio());
+    items.create(360, 3056, this.itemAleatorio());
+    items.create(440, 3056, this.itemAleatorio());
+    items.create(40, 3728, this.itemAleatorio());
+    items.create(120, 3728, this.itemAleatorio());
+    items.create(200, 3728, this.itemAleatorio());
+    items.create(96, 4992, this.itemAleatorio());
+    items.create(96, 5048, this.itemAleatorio());
+    items.create(208, 5176, this.itemAleatorio());
+    items.create(336, 5176, this.itemAleatorio());
+    items.create(72, 5784, this.itemAleatorio());
+    items.create(160, 5784, this.itemAleatorio());
+    items.create(424, 6464, this.itemAleatorio());
+    items.create(456, 6848, this.itemAleatorio());
+    items.create(144, 7040, this.itemAleatorio());
+    items.create(48, 7992, this.itemAleatorio());
+    items.create(384, 8128, this.itemAleatorio());
+    items.create(440, 8544, this.itemAleatorio());
+    items.create(32, 8856, this.itemAleatorio());
+    items.create(456, 9168, this.itemAleatorio());
+
+    //creo items no aleatorios para el final del nivel
+    items.create(40, 9376, 'item_1');
+    items.create(40, 10136, 'item_1');
+    items.create(40, 10328, 'item_1');
+    items.create(376, 9560, 'item_1');
+    items.create(248, 9688, 'item_1');
+    items.create(112, 9824, 'item_1');
+    
     
    
 
