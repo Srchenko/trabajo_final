@@ -8,7 +8,12 @@ class Nivel_2 extends Phaser.Scene {
 
   create () {
 
+    puntos_inicial = 0;
+    nivel_uno_jugado = false;
+    tiempo_inicial = 30;
+    temporizador_carga = 3000;
     torreta_disparo_izquierda = false;
+
     //  se crea la imagen de fondo y se repiten las veces que sea necesario para hacer el nivel largo
     let posicion_y = 0;
     for (let i = 0; i < 12; i++) {
@@ -50,7 +55,7 @@ class Nivel_2 extends Phaser.Scene {
     torreta = this.physics.add.group();
     let base_torreta;
 
-    base_torreta = this.add.image(0, 475, 'base_torreta').setOrigin(0);
+    this.add.image(0, 475, 'base_torreta').setOrigin(0);
     torreta.create(20, 500, 'torreta').setOrigin(0);
     torreta.getChildren()[0].setRotation(-0.2);
     torreta.getChildren()[0].max_ang = -0.2;
@@ -63,17 +68,65 @@ class Nivel_2 extends Phaser.Scene {
     torreta.getChildren()[1].max_ang = 0;
     torreta.getChildren()[1].cuadrante = 1;
 
-    base_torreta = this.add.image(0, 3850, 'base_torreta').setOrigin(0);
+    this.add.image(0, 3850, 'base_torreta').setOrigin(0);
     torreta.create(20, 3875, 'torreta').setOrigin(0);
     torreta.getChildren()[2].setRotation(0);
     torreta.getChildren()[2].max_ang = 0;
     torreta.getChildren()[2].cuadrante = 1;
 
-    base_torreta = this.add.image(472, 4000, 'base_torreta').setOrigin(0);
+    this.add.image(472, 4000, 'base_torreta').setOrigin(0);
     torreta.create(484, 4035, 'torreta').setOrigin(0);
     torreta.getChildren()[3].setRotation(3.14);
     torreta.getChildren()[3].max_ang = 3.14;
     torreta.getChildren()[3].cuadrante = 2;
+
+    this.add.image(472, 5650, 'base_torreta').setOrigin(0);
+    torreta.create(484, 5685, 'torreta').setOrigin(0);
+    torreta.getChildren()[4].setRotation(-2.6);
+    torreta.getChildren()[4].max_ang = 0;
+    torreta.getChildren()[4].cuadrante = 3;
+
+    this.add.image(472, 5450, 'base_torreta').setOrigin(0);
+    torreta.create(484, 5485, 'torreta').setOrigin(0);
+    torreta.getChildren()[5].setRotation(-3);
+    torreta.getChildren()[5].max_ang = 0;
+    torreta.getChildren()[5].cuadrante = 3;
+
+    this.add.image(0, 6300, 'base_torreta').setOrigin(0);
+    torreta.create(20, 6325, 'torreta').setOrigin(0);
+    torreta.getChildren()[6].setRotation(-0.79);
+    torreta.getChildren()[6].max_ang = 0;
+    torreta.getChildren()[6].cuadrante = 3;
+
+    this.add.image(472, 6700, 'base_torreta').setOrigin(0);
+    torreta.create(484, 6735, 'torreta').setOrigin(0);
+    torreta.getChildren()[7].setRotation(-2.6);
+    torreta.getChildren()[7].max_ang = 0;
+    torreta.getChildren()[7].cuadrante = 3;
+
+    this.add.image(472, 9950, 'base_torreta').setOrigin(0);
+    torreta.create(484, 9985, 'torreta').setOrigin(0);
+    torreta.getChildren()[8].setRotation(3.14);
+    torreta.getChildren()[8].max_ang = 3.14;
+    torreta.getChildren()[8].cuadrante = 2;
+
+    this.add.image(0, 8490, 'base_torreta').setOrigin(0);
+    torreta.create(20, 8515, 'torreta').setOrigin(0);
+    torreta.getChildren()[9].setRotation(0);
+    torreta.getChildren()[9].max_ang = 0;
+    torreta.getChildren()[9].cuadrante = 1;
+
+    this.add.image(0, 8940, 'base_torreta').setOrigin(0);
+    torreta.create(20, 8965, 'torreta').setOrigin(0);
+    torreta.getChildren()[10].setRotation(0);
+    torreta.getChildren()[10].max_ang = 0;
+    torreta.getChildren()[10].cuadrante = 1;
+
+    this.add.image(472, 8740, 'base_torreta').setOrigin(0);
+    torreta.create(484, 8775, 'torreta').setOrigin(0);
+    torreta.getChildren()[11].setRotation(-2.6);
+    torreta.getChildren()[11].max_ang = 0;
+    torreta.getChildren()[11].cuadrante = 3;
 
     for (let indice = 0; indice < torreta.getLength(); indice++) {
 
@@ -185,36 +238,77 @@ class Nivel_2 extends Phaser.Scene {
     //  se crea el hud y se mantiene en el mismo lugar de la pantalla siempre con el scrollFactor
     this.crearHud();
 
+    let baston = this.physics.add.sprite(50, 10700, "baston");
+    baston.body.immovable = true;
+    baston.body.moves = false;
+
     //  se agregan todas las colisiones
     plataformas_no_rompibles = [plataforma_hecha, costado_hecho];
     
     this.physics.add.collider(balas, plataformas_no_rompibles, this.desaparecerBala, null, this);
     this.physics.add.collider(balas, plataformas_rompibles, this.desaparecerBalaConPlataforma, null, this);
-    //this.physics.add.collider(balas, dron, this.desaparecerBalaConDron, null, this);
-    //this.physics.add.collider(balas, base, this.desaparecerBala, null, this);
+    this.physics.add.collider(balas, robot, this.desaparecerBalaConRobot, null, this);
 
     this.physics.add.collider(balas_torreta, plataformas_no_rompibles, this.desaparecerBala, null, this);
     this.physics.add.collider(balas_torreta, plataformas_rompibles, this.desaparecerBalaConPlataforma, null, this);
 
     jugador_overlap = this.physics.add.overlap(jugador, balas_torreta, this.bajarVidaJugador, null, this);
+    jugador_overlap_robot = this.physics.add.overlap(jugador, robot, this.bajarVidaJugador, null, this);
     this.physics.add.collider(jugador, plataformas_no_rompibles, this.sonidosJugador, null, this);
     this.physics.add.collider(jugador, plataformas_rompibles, this.sonidosJugador, null, this);
-    //this.physics.add.collider(jugador, base);
     this.physics.add.overlap(jugador, items, this.recolectarItem, null, this);
     this.physics.add.overlap(jugador, bordes_invisibles, this.activarDesactivarTorreta, null, this);
-    
-    //this.physics.add.collider(dron);
-    //this.physics.add.collider(dron, plataformas_no_rompibles);
-    //this.physics.add.collider(dron, plataformas_rompibles);
-    //this.physics.add.collider(dron, bordes_invisibles);
+    this.physics.add.collider(jugador, baston, this.ganasteJuego, null, this);
+
+    this.physics.add.collider(robot, bordes_invisibles_enemigo, this.cambiarLado, null, this);
+    this.physics.add.collider(robot, plataformas_no_rompibles);
 
     //  se añaden la música y los sonidos para este nivel
     this.agregarMusicaSonidos();
+
+    fondo_carga_nivel = this.add.image(0, 0, 'fondo_carga_nivel').setOrigin(0);
+    fondo_carga_nivel.visible = true;
+    texto_carga_nivel = this.add.rexBBCodeText(config.width / 2, config.height / 2, '[b]CARGANDO[/b]\n\n[b]NIVEL 2[/b]', { align: 'center', fontFamily: 'Helvetica', fill: '#fff', fontSize: '60px'});
+    texto_carga_nivel.setOrigin(0.5);
+    texto_carga_nivel.visible = true;
+
+    this.physics.pause();
 
     window.focus();
   }
 
   update (time, delta) {
+
+    if(tiempo_hasta_juego_superado > -2000){
+
+      tiempo_hasta_juego_superado -= delta;
+      
+      if(tiempo_hasta_juego_superado <= 0){
+
+        this.scene.start('juego_superado');
+
+      }
+
+      return;
+
+    }
+
+    if (fondo_carga_nivel.visible){
+
+      temporizador_carga -= delta;
+
+      if(temporizador_carga <= 0){
+
+        musica.play();
+        this.physics.resume();
+        fondo_carga_nivel.visible = false;
+        texto_carga_nivel.visible = false;
+
+      }
+
+      return;
+
+    }
 
     //  si la vida del jugador llega a 0 o termina el tiempo, se detiene el progreso del juego y se hace la animación de muerte con su sonido
     //  se dirige a la pantalla de fin de juego luego de la animación correspondiente
@@ -223,6 +317,12 @@ class Nivel_2 extends Phaser.Scene {
       musica.stop();
       if(tiempo_finalizado){
 
+        robot.getChildren().forEach(function(hijo){
+
+          hijo.anims.stop();
+
+        });
+        
         sonido_muerte_personaje[0].play();
         jugador.anims.play('perdio_jugador', true);
         tiempo_finalizado = false;
@@ -296,6 +396,7 @@ class Nivel_2 extends Phaser.Scene {
       if(espera_un_segundo_capo >= 2000){
 
         jugador_overlap.active = true;
+        jugador_overlap_robot.active = true;
         espera_un_segundo_capo = 0;
 
       }
@@ -586,6 +687,18 @@ class Nivel_2 extends Phaser.Scene {
     bordes_invisibles.create(252, 4250, 'pared_invisible_horizontal');
     bordes_invisibles.create(252, 4003, 'pared_invisible_horizontal');
     bordes_invisibles.create(252, 4365, 'pared_invisible_horizontal');
+    bordes_invisibles.create(252, 5405, 'pared_invisible_horizontal');
+    bordes_invisibles.create(252, 5855, 'pared_invisible_horizontal');
+    bordes_invisibles.create(252, 6750, 'pared_invisible_horizontal');
+    bordes_invisibles.create(252, 6545, 'pared_invisible_horizontal');
+    bordes_invisibles.create(252, 7125, 'pared_invisible_horizontal');
+    bordes_invisibles.create(252, 9945, 'pared_invisible_horizontal');
+    bordes_invisibles.create(252, 10405, 'pared_invisible_horizontal');
+    bordes_invisibles.create(252, 8475, 'pared_invisible_horizontal');
+    bordes_invisibles.create(252, 8925, 'pared_invisible_horizontal');
+    bordes_invisibles.create(252, 9420, 'pared_invisible_horizontal');
+    bordes_invisibles.create(252, 8615, 'pared_invisible_horizontal');
+    bordes_invisibles.create(252, 9235, 'pared_invisible_horizontal');
 
     bordes_invisibles_enemigo = this.physics.add.staticGroup();
     bordes_invisibles_enemigo.create(152, 1024, 'pared_invisible_vertical');
@@ -622,8 +735,8 @@ class Nivel_2 extends Phaser.Scene {
 
   crearJugador(){
 
-    //jugador = this.physics.add.sprite(225, 3725, 'jugador_movimiento');
     jugador = this.physics.add.sprite(225, 100, 'jugador_movimiento');
+    //jugador = this.physics.add.sprite(225, 10712, 'jugador_movimiento');
     jugador.setSize(18, 48, true);
     jugador.vida = 3;
     animacion_jugador_suelo = 'derecha_suelo';
@@ -636,64 +749,30 @@ class Nivel_2 extends Phaser.Scene {
 
     robot = this.physics.add.group();
 
-    robot.create(232, 1030, 'robot_prueba').setOrigin(0.5,1);
-    robot.create(72, 1630, 'robot_prueba').setOrigin(0.5,1);
-    robot.create(280, 1998, 'robot_prueba').setOrigin(0.5,1);
-    robot.create(240, 2774, 'robot_prueba').setOrigin(0.5,1);
-    robot.create(192, 3758, 'robot_prueba').setOrigin(0.5,1);
-    robot.create(88, 4318, 'robot_prueba').setOrigin(0.5,1);
-    robot.create(296, 4942, 'robot_prueba').setOrigin(0.5,1);
-    robot.create(136, 5654, 'robot_prueba').setOrigin(0.5,1);
-    robot.create(160, 6676, 'robot_prueba').setOrigin(0.5,1);
-    robot.create(100, 7062, 'robot_prueba').setOrigin(0.5,1);
-    robot.create(144, 8430, 'robot_prueba').setOrigin(0.5,1);
-    robot.create(88, 8886, 'robot_prueba').setOrigin(0.5,1);
-    robot.create(200, 9406, 'robot_prueba').setOrigin(0.5,1);
-    robot.create(216, 10334, 'robot_prueba').setOrigin(0.5,1);
+    robot.create(232, 1030, 'robot').setOrigin(0.5,1);
+    robot.create(72, 1630, 'robot').setOrigin(0.5,1);
+    robot.create(280, 1998, 'robot').setOrigin(0.5,1);
+    robot.create(240, 2774, 'robot').setOrigin(0.5,1);
+    robot.create(192, 3758, 'robot').setOrigin(0.5,1);
+    robot.create(88, 4318, 'robot').setOrigin(0.5,1);
+    robot.create(296, 4942, 'robot').setOrigin(0.5,1);
+    robot.create(136, 5654, 'robot').setOrigin(0.5,1);
+    robot.create(160, 6676, 'robot').setOrigin(0.5,1);
+    robot.create(100, 7062, 'robot').setOrigin(0.5,1);
+    robot.create(144, 8430, 'robot').setOrigin(0.5,1);
+    robot.create(88, 8886, 'robot').setOrigin(0.5,1);
+    robot.create(200, 9406, 'robot').setOrigin(0.5,1);
+    robot.create(216, 10334, 'robot').setOrigin(0.5,1);
 
-    
+    for (let indice = 0; indice < robot.getLength(); indice++) {
 
-    //  estos serán los drones que no se mueven
-     for (let indice = 0; indice < robot.getLength(); indice++) {
+      robot.getChildren()[indice].anims.play('robot_derecha', true);
+      robot.getChildren()[indice].setVelocity(300, 0);
+      robot.getChildren()[indice].setCollideWorldBounds(false);
+      robot.getChildren()[indice].vida = 1;
+      robot.getChildren()[indice].puntos = 30;
 
-       robot.getChildren()[indice].body.immovable = true;
-       robot.getChildren()[indice].body.moves = false;
-       robot.getChildren()[indice].setScale(0.4);
-    //   dron.getChildren()[indice].vida = 1;
-    //   dron.getChildren()[indice].anims.play('dron_movimiento', true);
-       robot.getChildren()[indice].setCollideWorldBounds(false);
-    //   dron.getChildren()[indice].puntos = 20;
-
-     }
-
-    //  estos serán los drones que se mueven
-    // for (let indice = 7; indice < 18; indice++) {
-
-    //   dron.getChildren()[indice].vida = 2;
-    //   dron.getChildren()[indice].anims.play('dron_movimiento', true);
-    //   dron.getChildren()[indice].body.setAllowGravity(false);
-    //   dron.getChildren()[indice].body.setBounce(1);
-    //   dron.getChildren()[indice].setCollideWorldBounds(false);
-    //   dron.getChildren()[indice].puntos = 20;
-
-    // }
-
-    // //  atributos adicionales para los drones que se mueven
-    // dron.getChildren()[7].setVelocity(-150, -150);
-    // dron.getChildren()[8].body.immovable = true;
-    // dron.getChildren()[8].setVelocity(-150, 0);
-    // dron.getChildren()[9].body.immovable = true;
-    // dron.getChildren()[9].setVelocity(0, -150);
-    // dron.getChildren()[10].setVelocity(-150, -150);
-    // dron.getChildren()[11].setVelocity(-150, -150);
-    // dron.getChildren()[12].setVelocity(150, -150);
-    // dron.getChildren()[13].setVelocity(-150, -150);
-    // dron.getChildren()[14].setVelocity(150, -150);
-    // dron.getChildren()[15].setVelocity(-150, -150);
-    // dron.getChildren()[16].body.immovable = true;
-    // dron.getChildren()[16].setVelocity(-150, 0);
-    // dron.getChildren()[17].body.immovable = true;
-    // dron.getChildren()[17].setVelocity(0, -150);
+    }
 
   }
 
@@ -701,11 +780,6 @@ class Nivel_2 extends Phaser.Scene {
 
     items = this.physics.add.group();
 
-    //  Aca voy a poner enemigos
-
-
-    
-    //  en casi todas las demás posiciones aparecerá un item aleatorio entre dos, habrá un 50% de probabilidades de que salga una moneda o un cronómetro
     items.create(208, 600, this.itemAleatorio());
     items.create(112, 1176, this.itemAleatorio());
     items.create(360, 1176, this.itemAleatorio());
@@ -717,7 +791,6 @@ class Nivel_2 extends Phaser.Scene {
     items.create(392, 4408, this.itemAleatorio());
     items.create(104, 4048, this.itemAleatorio());
     items.create(104, 4288, this.itemAleatorio());
-    items.create(192, 368, this.itemAleatorio());
     items.create(416, 1688, this.itemAleatorio());
     items.create(416, 1816, this.itemAleatorio());
     items.create(440, 2296, this.itemAleatorio());
@@ -742,16 +815,14 @@ class Nivel_2 extends Phaser.Scene {
     items.create(32, 8856, this.itemAleatorio());
     items.create(456, 9168, this.itemAleatorio());
 
-    //creo items no aleatorios para el final del nivel
+    //creo items no aleatorios
+    items.create(192, 368, 'item_1');
     items.create(40, 9376, 'item_1');
     items.create(40, 10136, 'item_1');
-    items.create(40, 10328, 'item_1');
+    items.create(40, 10318, 'item_1');
     items.create(376, 9560, 'item_1');
     items.create(248, 9688, 'item_1');
     items.create(112, 9824, 'item_1');
-    
-    
-   
 
     //  se les da atributos a todos los items
     for (let indice = 0; indice < items.getLength(); indice++) {
@@ -806,8 +877,9 @@ class Nivel_2 extends Phaser.Scene {
   agregarMusicaSonidos(){
 
     //  algunos sonidos y música estarán dentro de un arreglo, porque su comportamiento será diferente en diferentes puntos del juego dependiendo de las acciones del jugador
+    musica_carga = this.sound.add('musica_carga', {volume: 0.2});
+    musica_carga.play();
     musica = this.sound.add('musica_nivel_2', {volume: 0.2, loop: true});
-    musica.play();
     sonido_salto_personaje = [this.sound.add('salto_personaje', {volume: 0.5}), true];
     sonido_caida_personaje = [this.sound.add('caida_personaje', {volume: 0.5}), false];
     sonido_disparo_personaje = this.sound.add('disparo_personaje', {volume: 0.5});
@@ -820,6 +892,7 @@ class Nivel_2 extends Phaser.Scene {
     sonido_juntar_moneda = this.sound.add('juntar_moneda', {volume: 0.5});
     sonido_juntar_cronometro = this.sound.add('juntar_cronometro', {volume: 0.5});
     sonido_juntar_vida = this.sound.add('juntar_vida', {volume: 0.5});
+    dialogo_reptiliano = this.sound.add('dialogo_reptiliano_nivel_2', {volume: 1});
 
   }
 
@@ -835,57 +908,44 @@ class Nivel_2 extends Phaser.Scene {
 
   }
 
-  desaparecerBalaConDron(bala, dron_elegido){
+  desaparecerBalaConRobot(bala, robot_elegido){
 
     bala.destroy();
-    dron_elegido.vida--;
+    robot_elegido.vida--;
 
-    //  cuando el jugador acierta un disparo, el dron se moverá para abajo con un comportamiento aleatorio
-    let aleatorio = Phaser.Math.Between(1,2);
-    if(!dron_elegido.body.immovable){
-      if(aleatorio == 1){
-        dron_elegido.setVelocity(-150, 150);
-      }
-      else{
-        dron_elegido.setVelocity(150, 150);
-      }
-    }
-
-    //  si el dron es destruido, se añaden los puntos en el hud y se muestra en pantalla también, en el lugar de destrucción, los puntos obtenidos
-    //  hay dos sonidos diferentes para el dron, cuando se destruye y cuando recibe daño
-    if(dron_elegido.vida == 0){
+    if(robot_elegido.vida == 0){
 
       sonido_enemigo_destruido.play();
-      puntos_inicial += dron_elegido.puntos;
+      puntos_inicial += robot_elegido.puntos;
 
       texto_objeto_puntos[0].visible = false;
-      texto_objeto_puntos = [this.add.text(dron_elegido.x, dron_elegido.y, '+ ' + dron_elegido.puntos, {fontFamily: 'Arial Black', fontSize: '20px', fill: '#000'}).setOrigin(0.5), 2000];
+      texto_objeto_puntos = [this.add.text(robot_elegido.x, robot_elegido.y - 10, '+ ' + robot_elegido.puntos, {fontFamily: 'Arial Black', fontSize: '20px', fill: '#000'}).setOrigin(1), 2000];
 
       texto_puntos.setText("Puntos: " + puntos_inicial);
-      dron_elegido.destroy();
-
-    }
-    else{
-
-      sonido_danio_enemigo.play();
+      robot_elegido.destroy();
 
     }
 
   }
 
-  bajarVidaJugador(jugador_elegido, bala_enemiga_elegida){
+  bajarVidaJugador(jugador_elegido, objeto_elegido){
 
-    bala_enemiga_elegida.destroy();
+    if(!objeto_elegido.body.allowGravity){
+
+      objeto_elegido.destroy();
+
+    }
+
     //  se actualiza el hud con las vidas del jugador
     jugador_elegido.vida--;
     texto_vidas.setText("Vidas: " + jugador_elegido.vida);
     jugador_overlap.active = false;
+    jugador_overlap_robot.active = false;
 
     //  dependiendo de la vida del jugador, suceden diferentes sonidos y animaciones
     if (jugador_elegido.vida == 0){
 
-      sonido_muerte_personaje[0].play();
-      jugador_elegido.anims.play('perdio_jugador', true);
+      tiempo_finalizado = true;
 
     }
     else{
@@ -940,9 +1000,9 @@ class Nivel_2 extends Phaser.Scene {
 
   tiempoMax(){
 
-    if(tiempo_inicial > 60){
+    if(tiempo_inicial > 30){
 
-      tiempo_inicial = 60;
+      tiempo_inicial = 30;
       tiempo_segundo_frames = 1000;
 
     }
@@ -1067,6 +1127,140 @@ class Nivel_2 extends Phaser.Scene {
       return;
 
     }
+
+    if((borde_elegido == bordes_invisibles.getChildren()[8]) && borde_elegido.active){
+
+      torreta.getChildren()[4].activar_torreta = true;
+      torreta.getChildren()[5].activar_torreta = true;
+      borde_elegido.active = false;
+      return;
+
+    }
+
+    if((borde_elegido == bordes_invisibles.getChildren()[9]) && borde_elegido.active){
+
+      torreta.getChildren()[4].activar_torreta = false;
+      torreta.getChildren()[5].activar_torreta = false;
+      torreta.getChildren()[6].activar_torreta = true;
+      borde_elegido.active = false;
+      return;
+
+    }
+
+    if((borde_elegido == bordes_invisibles.getChildren()[10]) && borde_elegido.active){
+
+      torreta.getChildren()[6].activar_torreta = false;
+      borde_elegido.active = false;
+      return;
+
+    }
+
+    if((borde_elegido == bordes_invisibles.getChildren()[11]) && borde_elegido.active){
+
+      torreta.getChildren()[7].activar_torreta = true;
+      borde_elegido.active = false;
+      return;
+
+    }
+
+    if((borde_elegido == bordes_invisibles.getChildren()[12]) && borde_elegido.active){
+
+      torreta.getChildren()[7].activar_torreta = false;
+      borde_elegido.active = false;
+      return;
+
+    }
+
+    if((borde_elegido == bordes_invisibles.getChildren()[13]) && borde_elegido.active){
+
+      torreta.getChildren()[8].activar_torreta = true;
+      borde_elegido.active = false;
+      return;
+
+    }
+
+    if((borde_elegido == bordes_invisibles.getChildren()[14]) && borde_elegido.active){
+
+      torreta.getChildren()[8].activar_torreta = false;
+      borde_elegido.active = false;
+      return;
+
+    }
+
+    if((borde_elegido == bordes_invisibles.getChildren()[15]) && borde_elegido.active){
+
+      torreta.getChildren()[9].activar_torreta = true;
+      borde_elegido.active = false;
+      return;
+
+    }
+
+    if((borde_elegido == bordes_invisibles.getChildren()[16]) && borde_elegido.active){
+
+      torreta.getChildren()[9].activar_torreta = false;
+      torreta.getChildren()[10].activar_torreta = true;
+      borde_elegido.active = false;
+      return;
+
+    }
+
+    if((borde_elegido == bordes_invisibles.getChildren()[17]) && borde_elegido.active){
+
+      torreta.getChildren()[10].activar_torreta = false;
+      borde_elegido.active = false;
+      return;
+
+    }
+
+    if((borde_elegido == bordes_invisibles.getChildren()[18]) && borde_elegido.active){
+
+      torreta.getChildren()[11].activar_torreta = true;
+      borde_elegido.active = false;
+      return;
+
+    }
+
+    if((borde_elegido == bordes_invisibles.getChildren()[19]) && borde_elegido.active){
+
+      torreta.getChildren()[11].activar_torreta = false;
+      borde_elegido.active = false;
+      return;
+
+    }
+
+  }
+
+  cambiarLado(robot_elegido, borde_elegido){
+
+    if(robot_elegido.anims.currentAnim.key == 'robot_derecha'){
+
+      robot_elegido.anims.play('robot_izquierda');
+      robot_elegido.setVelocity(-300, 0);
+
+    }
+    else{
+
+      robot_elegido.anims.play('robot_derecha');
+      robot_elegido.setVelocity(300, 0);
+
+    }
+
+  }
+
+  ganasteJuego(objeto_1, objeto_2){
+
+    puntuacion_maxima[1] = puntos_inicial;
+    juego_superado = true;
+    musica.stop();
+    dialogo_reptiliano.play();
+    tiempo_hasta_juego_superado = 8000;
+    this.physics.pause();
+    robot.getChildren().forEach(function(hijo){
+
+      hijo.anims.stop();
+
+    });
+    jugador.anims.stop();
 
   }
 

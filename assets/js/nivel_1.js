@@ -9,6 +9,7 @@ class Nivel_1 extends Phaser.Scene {
   create () {
 
     torreta_disparo_izquierda = false;
+    nivel_uno_jugado = true;
 
     //  se crea la imagen de fondo y se repiten las veces que sea necesario para hacer el nivel largo
     let posicion_y = 0;
@@ -130,7 +131,7 @@ class Nivel_1 extends Phaser.Scene {
     jugador_overlap = this.physics.add.overlap(jugador, dron, this.bajarVidaJugador, null, this);
     this.physics.add.collider(jugador, plataformas_no_rompibles, this.sonidosJugador, null, this);
     this.physics.add.collider(jugador, plataformas_rompibles, this.sonidosJugador, null, this);
-    this.physics.add.collider(jugador, base);
+    this.physics.add.collider(jugador, base, this.pasarSiguienteNivel, null, this);
     this.physics.add.overlap(jugador, items, this.recolectarItem, null, this);
     
     this.physics.add.collider(dron);
@@ -141,10 +142,49 @@ class Nivel_1 extends Phaser.Scene {
     //  se añaden la música y los sonidos para este nivel
     this.agregarMusicaSonidos();
 
+    fondo_carga_nivel = this.add.image(0, 0, 'fondo_carga_nivel').setOrigin(0);
+    fondo_carga_nivel.visible = true;
+    texto_carga_nivel = this.add.rexBBCodeText(config.width / 2, config.height / 2, '[b]CARGANDO[/b]\n\n[b]NIVEL 1[/b]', { align: 'center', fontFamily: 'Helvetica', fill: '#fff', fontSize: '60px'});
+    texto_carga_nivel.setOrigin(0.5);
+    texto_carga_nivel.visible = true;
+
+    this.physics.pause();
+
     window.focus();
   }
 
   update (time, delta) {
+
+    if (fondo_carga_nivel.visible){
+
+      temporizador_carga -= delta;
+
+      if(temporizador_carga <= 0){
+
+        this.physics.resume();
+
+        if(nivel_uno_jugado_primera_vez){
+
+          dialogo_reptiliano.play();
+          musica.volume = 0.1;
+          nivel_uno_jugado_primera_vez = false;
+
+        }
+
+        fondo_carga_nivel.visible = false;
+        texto_carga_nivel.visible = false;
+
+      }
+
+      return;
+
+    }
+
+    if(!dialogo_reptiliano.isPlaying){
+
+      musica.volume = 0.2;
+
+    }
 
     //  si la vida del jugador llega a 0 o termina el tiempo, se detiene el progreso del juego y se hace la animación de muerte con su sonido
     //  se dirige a la pantalla de fin de juego luego de la animación correspondiente
@@ -397,6 +437,7 @@ class Nivel_1 extends Phaser.Scene {
   crearJugador(){
 
     jugador = this.physics.add.sprite(75, 200, 'jugador_movimiento');
+    //jugador = this.physics.add.sprite(75, 10000, 'jugador_movimiento');
     jugador.setSize(18, 48, true);
     jugador.vida = 3;
     animacion_jugador_suelo = 'derecha_suelo';
@@ -550,6 +591,7 @@ class Nivel_1 extends Phaser.Scene {
     sonido_muerte_personaje = [this.sound.add('muerte_personaje', {volume: 0.5, loop: true}), 2000];
     sonido_juntar_moneda = this.sound.add('juntar_moneda', {volume: 0.5});
     sonido_juntar_cronometro = this.sound.add('juntar_cronometro', {volume: 0.5});
+    dialogo_reptiliano = this.sound.add('dialogo_reptiliano_nivel_1', {volume: 1});
 
   }
 
@@ -689,6 +731,14 @@ class Nivel_1 extends Phaser.Scene {
       sonido_caida_personaje[1] = false;
 
     }
+
+  }
+
+  pasarSiguienteNivel(objeto_1, objeto_2){
+
+    puntuacion_maxima[0] = puntos_inicial;
+    musica.stop();
+    this.scene.start('nivel_2');
 
   }
 
