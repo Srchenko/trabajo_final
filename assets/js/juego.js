@@ -10,6 +10,12 @@ var config = {
           debug: false
       }
   },
+  scale: {
+        mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH,
+        width: 504,
+        height: 896
+    },
   scene: [Precarga, Menu_Principal, Creditos, Nivel_1, Nivel_2, Fin_juego, Juego_superado],
   audio: {
       disableWebAudio: true
@@ -94,6 +100,10 @@ var sonido_juntar_vida;
 
 var imagen_inicio;
 var presiona_cualquier_tecla;
+
+var guardado_local_nivel_1 = "guardado_local_nivel_1";
+var guardado_local_nivel_2 = "guardado_local_nivel_2";
+var puntuacion_maxima_definitiva = [0, 0];
 
 var game = new Phaser.Game(config);
 window.focus();

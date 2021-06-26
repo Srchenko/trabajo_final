@@ -28,6 +28,10 @@ class Menu_Principal extends Phaser.Scene {
     let tutorial = this.add.rexBBCodeText(config.width / 2 , config.height / 2 + 225, tutorial_menu, { align: 'center', fontFamily: 'Helvetica', fill: '#000', fontSize: '22px', lineSpacing: 8});
     tutorial.setOrigin(0.5);
 
+    let puntuaciones = '[b]Puntuación Máxima Nivel 1: [/b]' + puntuacion_maxima_definitiva[0] + ' puntos\n[b]Puntuación Máxima Nivel 2: [/b]' + puntuacion_maxima_definitiva[1] + ' puntos';
+    let puntuaciones_max = this.add.rexBBCodeText(config.width / 2 , config.height / 2 + 375, puntuaciones, { align: 'center', fontFamily: 'Helvetica', fill: '#000', fontSize: '25px', lineSpacing: 8});
+    puntuaciones_max.setOrigin(0.5);
+
     //  se agrega una imagen de inicio que luego desaparecerá presionando una tecla o haciendo click
     imagen_inicio = this.add.image(0, 0, 'pantalla_inicio').setOrigin(0);
 

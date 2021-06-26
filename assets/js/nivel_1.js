@@ -212,6 +212,14 @@ class Nivel_1 extends Phaser.Scene {
       if(sonido_muerte_personaje[1] <= -1000){
 
         vidas_jugador_fin_juego = jugador.vida;
+
+        if(puntos_inicial > puntuacion_maxima_definitiva[0]){
+
+          puntuacion_maxima_definitiva[0] = puntos_inicial;
+          localStorage.setItem(guardado_local_nivel_1, puntuacion_maxima_definitiva[0]);
+
+        }        
+
         this.scene.start('fin_juego');
 
       }
@@ -738,6 +746,14 @@ class Nivel_1 extends Phaser.Scene {
 
     puntuacion_maxima[0] = puntos_inicial;
     musica.stop();
+
+    if(puntos_inicial > puntuacion_maxima_definitiva[0]){
+
+      puntuacion_maxima_definitiva[0] = puntos_inicial;
+      localStorage.setItem(guardado_local_nivel_1, puntuacion_maxima_definitiva[0]);
+
+    } 
+
     this.scene.start('nivel_2');
 
   }

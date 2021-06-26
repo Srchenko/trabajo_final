@@ -48,6 +48,7 @@ class Precarga extends Phaser.Scene {
     this.load.image('item_3', 'assets/images/item_3.png');
     this.load.image('pared_invisible_vertical', 'assets/images/pared_invisible_vertical.png');
     this.load.image('baston', 'assets/images/baston.png');
+    this.load.image('robot_definitivo', 'assets/images/robot_definitivo.png');
 
     //  se cargan las imágenes del tilemap del nivel 2
     this.load.image('bordes_nivel_2', 'assets/images/bordes_nivel_2.png');
@@ -100,6 +101,31 @@ class Precarga extends Phaser.Scene {
   }
 
   create(){
+
+    //localStorage.removeItem(guardado_local_nivel_1);
+    //localStorage.removeItem(guardado_local_nivel_2);
+
+    if(localStorage.getItem(guardado_local_nivel_1) == null) {
+
+      puntuacion_maxima_definitiva[0] = 0;
+
+    }
+    else {
+
+      puntuacion_maxima_definitiva[0] = parseInt(localStorage.getItem(guardado_local_nivel_1));
+
+    }
+
+    if(localStorage.getItem(guardado_local_nivel_2) == null) {
+
+      puntuacion_maxima_definitiva[1] = 0;
+
+    }
+    else {
+
+      puntuacion_maxima_definitiva[1] = parseInt(localStorage.getItem(guardado_local_nivel_2));
+
+    }
 
     this.scene.start('menu_principal');
 

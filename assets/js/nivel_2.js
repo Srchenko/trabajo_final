@@ -21,6 +21,9 @@ class Nivel_2 extends Phaser.Scene {
       this.add.image(0, posicion_y, 'base').setOrigin(0);
       posicion_y += 896;
     }
+
+    let robot_definitivo = this.add.image(252, 7597, 'robot_definitivo').setOrigin(0.5);
+    robot_definitivo.setAlpha(0.1);
     
     //  acá se crean las plataformas que se pueden romper con disparos
     this.crearPlataformasRompibles();
@@ -285,6 +288,13 @@ class Nivel_2 extends Phaser.Scene {
       
       if(tiempo_hasta_juego_superado <= 0){
 
+        if(puntos_inicial > puntuacion_maxima_definitiva[1]){
+
+          puntuacion_maxima_definitiva[1] = puntos_inicial;
+          localStorage.setItem(guardado_local_nivel_2, puntuacion_maxima_definitiva[1]);
+
+        } 
+
         this.scene.start('juego_superado');
 
       }
@@ -342,6 +352,14 @@ class Nivel_2 extends Phaser.Scene {
       if(sonido_muerte_personaje[1] <= -1000){
 
         vidas_jugador_fin_juego = jugador.vida;
+
+        if(puntos_inicial > puntuacion_maxima_definitiva[1]){
+
+          puntuacion_maxima_definitiva[1] = puntos_inicial;
+          localStorage.setItem(guardado_local_nivel_2, puntuacion_maxima_definitiva[1]);
+
+        }
+
         this.scene.start('fin_juego');
 
       }
@@ -737,6 +755,7 @@ class Nivel_2 extends Phaser.Scene {
 
     jugador = this.physics.add.sprite(225, 100, 'jugador_movimiento');
     //jugador = this.physics.add.sprite(225, 10712, 'jugador_movimiento');
+    //jugador = this.physics.add.sprite(225, 7300, 'jugador_movimiento');
     jugador.setSize(18, 48, true);
     jugador.vida = 3;
     animacion_jugador_suelo = 'derecha_suelo';
