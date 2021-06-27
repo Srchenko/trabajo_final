@@ -7,6 +7,17 @@ class Precarga extends Phaser.Scene {
   }
 
   preload(){
+    
+    var loadingText = this.make.text({
+      x: 252,
+      y: 448,
+      text: 'CARGANDO',
+      style: {
+          font: '50px monospace',
+          fill: '#ffffff'
+      }
+    });
+    loadingText.setOrigin(0.5, 0.5);
 
     //  un plugin para escribir mejor un texto
     this.load.plugin('rexbbcodetextplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexbbcodetextplugin.min.js', true);
